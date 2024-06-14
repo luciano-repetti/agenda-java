@@ -42,7 +42,7 @@ public class Contacto {
         boolean flag = false;
         if ((objeto instanceof Contacto)) {
             Contacto contacto = (Contacto) objeto;
-            flag =  this.id.equals(contacto.id);
+            flag = this.id.equals(contacto.id);
         }
         return flag;
     }

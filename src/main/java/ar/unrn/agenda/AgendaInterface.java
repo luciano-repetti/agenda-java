@@ -1,9 +1,10 @@
 package ar.unrn.agenda;
 
+import ar.unrn.agenda.strategyBusqueda.EstrategiaBusqueda;
 import ar.unrn.contactos.Contacto;
-import ar.unrn.contactos.EstrategiaBusqueda;
 
 import java.util.UUID;
+import java.util.List;
 
 public interface AgendaInterface {
 
@@ -17,5 +18,5 @@ public interface AgendaInterface {
 
     void eliminarContacto(UUID id);
 
-    <T> void buscarContacto(EstrategiaBusqueda<T> estrategiaBusqueda, T criterio);
+    <T> List<Contacto> buscarContacto(EstrategiaBusqueda<T> estrategiaBusqueda, T palabra);
 }
