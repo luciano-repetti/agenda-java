@@ -36,4 +36,15 @@ public class Contacto {
 
         this.direccion = new Direccion(pais, provincia, ciudad, calle);
     }
+
+    @Override
+    public boolean equals(Object objeto) {
+        boolean flag = false;
+        if ((objeto instanceof Contacto)) {
+            Contacto contacto = (Contacto) objeto;
+            flag =  this.id.equals(contacto.id);
+        }
+        return flag;
+    }
+
 }
