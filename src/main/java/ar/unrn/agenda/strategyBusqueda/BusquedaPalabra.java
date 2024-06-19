@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Iterator;
 
 public abstract class BusquedaPalabra implements EstrategiaBusqueda<String> {
-    protected String busqueda(Contacto contactoActual) {
-        return "";
-    }
+    abstract protected String busqueda(Contacto contactoActual);
 
     @Override
     public List<Contacto> buscar(Agenda agenda, String palabraComparar) {
