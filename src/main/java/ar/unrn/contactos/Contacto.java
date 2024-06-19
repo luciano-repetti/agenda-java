@@ -11,20 +11,6 @@ public class Contacto {
     public UUID id;
     public Direccion direccion;
 
-    public static class Direccion {
-        public String pais;
-        public String provincia;
-        public String ciudad;
-        public String calle;
-
-        public Direccion(String pais, String provincia, String ciudad, String calle) {
-            this.pais = pais;
-            this.provincia = provincia;
-            this.ciudad = ciudad;
-            this.calle = calle;
-        }
-    }
-
     public Contacto(String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
             String provincia, String ciudad, String calle) {
         this.nombre = nombre;
