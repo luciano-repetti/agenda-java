@@ -17,7 +17,7 @@ public interface DataBaseInterface {
 
     public void updateContacto(Contacto contacto);
 
-    public void deleteContacto(Contacto contacto);
+    public void deleteContacto(String uuid);
 
     public List<Contacto> getContactos();
 

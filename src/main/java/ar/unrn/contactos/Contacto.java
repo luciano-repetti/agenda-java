@@ -11,8 +11,21 @@ public class Contacto {
     public UUID id;
     public Direccion direccion;
 
+
+    public Contacto(String uuid, String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
+                    String provincia, String ciudad, String calle) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.numeroTelefono = numeroTelefono;
+        this.email = email;
+        this.notas = notas;
+        this.id = UUID.fromString(uuid);
+
+        this.direccion = new Direccion(pais, provincia, ciudad, calle);
+    }
+
     public Contacto(String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
-            String provincia, String ciudad, String calle) {
+                    String provincia, String ciudad, String calle) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroTelefono = numeroTelefono;
