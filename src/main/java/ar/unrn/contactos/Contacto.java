@@ -11,9 +11,9 @@ public class Contacto {
     public UUID id;
     public Direccion direccion;
 
-
-    public Contacto(String uuid, String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
-                    String provincia, String ciudad, String calle) {
+    public Contacto(String uuid, String nombre, String apellido, String numeroTelefono, String email, String notas,
+            String pais,
+            String provincia, String ciudad, String calle) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroTelefono = numeroTelefono;
@@ -25,7 +25,7 @@ public class Contacto {
     }
 
     public Contacto(String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
-                    String provincia, String ciudad, String calle) {
+            String provincia, String ciudad, String calle) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroTelefono = numeroTelefono;
@@ -44,6 +44,18 @@ public class Contacto {
             flag = this.id.equals(contacto.id);
         }
         return flag;
+    }
+
+    public void modificarContacto(Contacto contacto) {
+        this.nombre = contacto.nombre;
+        this.apellido = contacto.apellido;
+        this.numeroTelefono = contacto.numeroTelefono;
+        this.email = contacto.email;
+        this.notas = contacto.notas;
+        this.direccion.pais = contacto.direccion.pais;
+        this.direccion.provincia = contacto.direccion.provincia;
+        this.direccion.ciudad = contacto.direccion.ciudad;
+        this.direccion.calle = contacto.direccion.calle;
     }
 
     public void actualizarAtributo(String atributo, String valor) {

@@ -140,6 +140,17 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
         return false;
     }
 
+    public boolean editarContacto(UUID id, Contacto contactoEditado) {
+        for (Contacto contacto : contactos) {
+            if (contacto.id.equals(id)) {
+                contacto.modificarContacto(contactoEditado);
+                notificarObserversUpdate(contacto);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class ArregloIterator implements Iterator<Contacto> {
         private int indiceActual = 0;
 
