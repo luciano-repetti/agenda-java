@@ -46,4 +46,37 @@ public class Contacto {
         return flag;
     }
 
+    public void actualizarAtributo(String atributo, String valor) {
+        switch (atributo.toLowerCase()) {
+            case "nombre":
+                this.nombre = valor;
+                break;
+            case "apellido":
+                this.apellido = valor;
+                break;
+            case "numerotelefono":
+                this.numeroTelefono = valor;
+                break;
+            case "email":
+                this.email = valor;
+                break;
+            case "notas":
+                this.notas = valor;
+                break;
+            case "pais":
+                this.direccion.pais = valor;
+                break;
+            case "provincia":
+                this.direccion.provincia = valor;
+                break;
+            case "ciudad":
+                this.direccion.ciudad = valor;
+                break;
+            case "calle":
+                this.direccion.calle = valor;
+                break;
+            default:
+                throw new IllegalArgumentException("Atributo desconocido: " + atributo);
+        }
+    }
 }
