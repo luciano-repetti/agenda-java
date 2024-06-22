@@ -70,11 +70,10 @@ public class DataBase implements DataBaseInterface, Observer {
         }
     }
 
-
     @Override
     public void actualizar(Contacto contacto) {
         try {
-            updateContacto(contacto);  // Cambié updateContacto a postContacto aquí
+            updateContacto(contacto); // Cambié updateContacto a postContacto aquí
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -126,10 +125,21 @@ public class DataBase implements DataBaseInterface, Observer {
                 String ciudad = resultSet.getString("ciudad");
                 String calle = resultSet.getString("calle");
 
-                Contacto contacto = new Contacto(uuid, nombre, apellido, numeroTelefono, email, notas, pais, provincia, ciudad, calle);
+                Contacto contacto = new Contacto(uuid, nombre, apellido, numeroTelefono, email, notas, pais, provincia,
+                        ciudad, calle);
                 contactos.add(contacto);
             }
             return contactos;
         }
+    }
+
+    @Override
+    public List<Contacto> traerContactos(Boolean active) {
+        try {
+            return getContactos(active);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

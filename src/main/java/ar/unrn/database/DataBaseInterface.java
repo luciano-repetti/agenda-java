@@ -19,5 +19,4 @@ public interface DataBaseInterface {
 
     public List<Contacto> getContactos(Boolean active) throws SQLException;
 
-
 }

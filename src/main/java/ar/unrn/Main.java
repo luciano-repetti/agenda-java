@@ -13,11 +13,16 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         try {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Ingrese el nombre de su agenda (puede ser una existente o una nueva): ");
+            String dataBaseUrl = scanner.nextLine();
+
             // Crear una instancia de la base de datos
-            DataBaseInterface database = new DataBase("agenda4.db");
+            DataBaseInterface database = new DataBase(dataBaseUrl);
 
             // Obtener la instancia singleton de la agenda
-            Agenda agenda = Agenda.getAgenda();
+            Agenda agenda = Agenda.getAgenda(database.getContactos(true));
 
             // Registrar la base de datos como observer
             agenda.registrarObserver((Observer) database);

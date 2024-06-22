@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
 
-    private final List<Contacto> contactos;
+    private List<Contacto> contactos;
     private final List<Observer> observers;
     private static Agenda agenda;
 
@@ -27,9 +27,9 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
         this.observers = new ArrayList<>();
     }
 
-    public static Agenda getAgenda() {
+    public static Agenda getAgenda(List<Contacto> contactos) {
         if (agenda == null) {
-            agenda = new Agenda();
+            agenda = new Agenda(contactos);
         }
         return agenda;
     }
