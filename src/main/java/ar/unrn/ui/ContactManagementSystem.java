@@ -1,6 +1,7 @@
 package ar.unrn.ui;
 
 import ar.unrn.agenda.Agenda;
+import ar.unrn.archivos.ExportadorContactos;
 import ar.unrn.contactos.Observer;
 import ar.unrn.database.DataBase;
 import ar.unrn.database.DataBaseInterface;
@@ -57,6 +58,28 @@ public class ContactManagementSystem {
             }
         });
         top.add(newContact);
+
+        JButton exportContacts = new JButton("Exportar contactos");
+        exportContacts.setFont(new Font("Tahoma", Font.BOLD, 18));
+        exportContacts.setFocusable(false);
+        exportContacts.setBackground(new Color(4, 57, 94));
+        exportContacts.setForeground(Color.white);
+        exportContacts.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        exportContacts.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        exportContacts.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ExportadorContactos exportador = new ExportadorContactos();
+                try {
+                    exportador.exportarContactos(Agenda.getAgenda(database.getContactos(true)));
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+        top.add(exportContacts);
 
         frame.add(top, BorderLayout.NORTH);
 
