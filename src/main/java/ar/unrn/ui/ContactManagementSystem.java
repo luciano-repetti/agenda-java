@@ -19,7 +19,7 @@ public class ContactManagementSystem {
     private static final String topColor = "#356169";
     private static final String bgColor = "#5faab1";
 
-    public ContactManagementSystem( String databaseUrl,DataBaseInterface database, Agenda agenda ) throws SQLException {
+    public ContactManagementSystem(String databaseUrl, DataBaseInterface database, Agenda agenda) throws SQLException {
 
         agenda.registrarObserver((Observer) database);
 
@@ -67,6 +67,7 @@ public class ContactManagementSystem {
         Refresh.refreshContacts((DataBase) database, table);
 
         JScrollPane sp = new JScrollPane(table);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setBackground(null);
         frame.add(sp, BorderLayout.CENTER);
 

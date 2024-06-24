@@ -40,7 +40,7 @@ public class Refresh {
             panel.setBackground(Color.decode(row1));
             if (i % 2 == 0)
                 panel.setBackground(Color.decode(row2));
-            panel.setPreferredSize(new Dimension(100, 55));
+            panel.setPreferredSize(new Dimension(1500, 55));
 
             GridBagConstraints panelGbc = new GridBagConstraints();
             panelGbc.fill = GridBagConstraints.BOTH;
@@ -68,7 +68,7 @@ public class Refresh {
 
             panelGbc.gridx = 9;
             JPanel containerButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-            
+
             containerButton.setBackground(panel.getBackground());
 
             JButton view = GUI.button("View", new Color(4, 57, 94));

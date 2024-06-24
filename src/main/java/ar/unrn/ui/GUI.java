@@ -8,7 +8,7 @@ public class GUI {
         JLabel label = new JLabel(text);
         label.setForeground(Color.decode("#F1F1F1"));
         label.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        label.setPreferredSize(new Dimension(100, 55));
+        label.setPreferredSize(null);
         return label;
     }
 
