@@ -13,22 +13,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-
 public class OpenContact {
 
-    public OpenContact(String dataBaseUrl) throws SQLException {
-        DataBaseInterface database = new DataBase(dataBaseUrl);
-        Agenda agenda = Agenda.getAgenda(database.getContactos(true));
+    private static Agenda agenda;
 
-        agenda.registrarObserver((Observer) database);
+    public OpenContact(DataBaseInterface dataBase, JPanel container) throws SQLException {
+
+        try {
+            agenda = Agenda.getAgenda(dataBase.getContactos(true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         JFrame frame = new JFrame("Contacts Management System");
         frame.setLayout(new BorderLayout());
-        frame.setSize(800,600);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setBackground(Color.white);
 
-        JPanel table = new JPanel(new GridLayout(11,2,15,15));
+        JPanel table = new JPanel(new GridLayout(11, 2, 15, 15));
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -90,6 +93,7 @@ public class OpenContact {
                         email.getText(), notas.getText(), pais.getText(),
                         provincia.getText(), ciudad.getText(), calle.getText());
                 agenda.agregarContacto(nuevoContacto);
+                Refresh.refreshContacts((DataBase) dataBase, container);
                 frame.dispose();
             }
         });
@@ -99,16 +103,14 @@ public class OpenContact {
         frame.setVisible(true);
     }
 
-
-
     public OpenContact(Contacto c) {
         JFrame frame = new JFrame("Contacts Management System");
         frame.setLayout(new BorderLayout());
-        frame.setSize(800,600);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setBackground(Color.white);
 
-        JPanel table = new JPanel(new GridLayout(11,2,15,15));
+        JPanel table = new JPanel(new GridLayout(11, 2, 15, 15));
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -167,7 +169,6 @@ public class OpenContact {
 
         frame.add(table, BorderLayout.CENTER);
         frame.setVisible(true);
-
 
     }
 }
