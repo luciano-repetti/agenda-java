@@ -44,28 +44,28 @@ public class Refresh {
             panelGbc.insets = new Insets(5, 10, 5, 10);
             panelGbc.weightx = 1.0;
 
+            // panelGbc.gridx = 0;
+            // panel.add(GUI.label(c.id.toString()), panelGbc);
             panelGbc.gridx = 0;
-            panel.add(GUI.label(c.id.toString()), panelGbc);
-            panelGbc.gridx = 1;
             panel.add(GUI.label(c.nombre), panelGbc);
-            panelGbc.gridx = 2;
+            panelGbc.gridx = 1;
             panel.add(GUI.label(c.apellido), panelGbc);
-            panelGbc.gridx = 3;
+            panelGbc.gridx = 2;
             panel.add(GUI.label(c.numeroTelefono), panelGbc);
-            panelGbc.gridx = 4;
+            panelGbc.gridx = 3;
             panel.add(GUI.label(c.email), panelGbc);
-            panelGbc.gridx = 5;
+            panelGbc.gridx = 4;
             panel.add(GUI.label(c.notas), panelGbc);
-            panelGbc.gridx = 6;
+            panelGbc.gridx = 5;
             panel.add(GUI.label(c.direccion.pais), panelGbc);
-            panelGbc.gridx = 7;
+            panelGbc.gridx = 6;
             panel.add(GUI.label(c.direccion.provincia), panelGbc);
-            panelGbc.gridx = 8;
+            panelGbc.gridx = 7;
             panel.add(GUI.label(c.direccion.ciudad), panelGbc);
-            panelGbc.gridx = 9;
+            panelGbc.gridx = 8;
             panel.add(GUI.label(c.direccion.calle), panelGbc);
 
-            panelGbc.gridx = 10;
+            panelGbc.gridx = 9;
             JPanel containerButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
             containerButton.setBackground(panel.getBackground());

@@ -35,10 +35,10 @@ public class OpenContact {
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        table.add(GUI.label("UUID")).setForeground(Color.black);
-        JLabel id = GUI.label(String.valueOf(""));
-        id.setForeground(Color.black);
-        table.add(id);
+        // table.add(GUI.label("UUID")).setForeground(Color.black);
+        // JLabel id = GUI.label(String.valueOf(""));
+        // id.setForeground(Color.black);
+        // table.add(id);
 
         table.add(GUI.label("Nombre: ")).setForeground(Color.black);
         JTextField nombre = GUI.textField("");
@@ -114,10 +114,10 @@ public class OpenContact {
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        table.add(GUI.label("UUID")).setForeground(Color.black);
-        JLabel id = GUI.label(String.valueOf(c.id));
-        id.setForeground(Color.black);
-        table.add(id);
+        // table.add(GUI.label("UUID")).setForeground(Color.black);
+        // JLabel id = GUI.label(String.valueOf(c.id));
+        // id.setForeground(Color.black);
+        // table.add(id);
 
         table.add(GUI.label("Nombre: ")).setForeground(Color.black);
         JTextField nombre = GUI.textField(c.nombre);
