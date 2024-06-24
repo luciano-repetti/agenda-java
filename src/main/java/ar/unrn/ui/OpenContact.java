@@ -2,191 +2,199 @@ package ar.unrn.ui;
 
 import ar.unrn.agenda.Agenda;
 import ar.unrn.contactos.Contacto;
-import ar.unrn.contactos.Observer;
 import ar.unrn.database.DataBase;
 import ar.unrn.database.DataBaseInterface;
+import ar.unrn.validaciones.Validaciones;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OpenContact {
 
     private static Agenda agenda;
+    private List<Validaciones> validacionesList = new ArrayList<>();
+    private JFrame frame;
+    private JPanel container;
 
     public OpenContact(DataBaseInterface dataBase, JPanel container) throws SQLException {
+        this.container = container;
+        inicializarAgenda(dataBase);
 
-        try {
-            agenda = Agenda.getAgenda(dataBase.getContactos(true));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        frame = new JFrame("Contacts Management System");
+        configurarFrame(frame);
 
-        JFrame frame = new JFrame("Contacts Management System");
-        frame.setLayout(new BorderLayout());
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().setBackground(Color.white);
-
-        JPanel table = new JPanel(new GridLayout(11, 2, 15, 15));
-        table.setBackground(Color.white);
-        table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // table.add(GUI.label("UUID")).setForeground(Color.black);
-        // JLabel id = GUI.label(String.valueOf(""));
-        // id.setForeground(Color.black);
-        // table.add(id);
-
-        table.add(GUI.label("Nombre: ")).setForeground(Color.black);
-        JTextField nombre = GUI.textField("");
-        table.add(nombre);
-
-        table.add(GUI.label("Apellido: ")).setForeground(Color.black);
-        JTextField apellido = GUI.textField("");
-        table.add(apellido);
-
-        table.add(GUI.label("Numero de telefono: ")).setForeground(Color.black);
-        JTextField numeroTelefono = GUI.textField("");
-        table.add(numeroTelefono);
-
-        table.add(GUI.label("Email: ")).setForeground(Color.black);
-        JTextField email = GUI.textField("");
-        table.add(email);
-
-        table.add(GUI.label("Notas: ")).setForeground(Color.black);
-        JTextField notas = GUI.textField("");
-        table.add(notas);
-
-        table.add(GUI.label("Pais: ")).setForeground(Color.black);
-        JTextField pais = GUI.textField("");
-        table.add(pais);
-
-        table.add(GUI.label("Provincia: ")).setForeground(Color.black);
-        JTextField provincia = GUI.textField("");
-        table.add(provincia);
-
-        table.add(GUI.label("Ciudad: ")).setForeground(Color.black);
-        JTextField ciudad = GUI.textField("");
-        table.add(ciudad);
-
-        table.add(GUI.label("Calle: ")).setForeground(Color.black);
-        JTextField calle = GUI.textField("");
-        table.add(calle);
+        JPanel table = crearFormularioContacto(new Contacto("", "", "", "", "", "", "", "", ""), true);
 
         JButton cancel = GUI.button("Cancel", new Color(208, 11, 3));
-        cancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
-        table.add(cancel);
+        cancelarAccion(cancel);
 
         JButton save = GUI.button("Save", new Color(88, 179, 88));
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Contacto nuevoContacto = new Contacto(nombre.getText(), apellido.getText(), numeroTelefono.getText(),
-                        email.getText(), notas.getText(), pais.getText(),
-                        provincia.getText(), ciudad.getText(), calle.getText());
-                agenda.agregarContacto(nuevoContacto);
-                Refresh.refreshContacts((DataBase) dataBase, container);
-                frame.dispose();
-            }
-        });
+        guardarAccion(save, dataBase);
+
+        table.add(cancel);
         table.add(save);
 
         frame.add(table, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
-    public OpenContact(Contacto c, DataBaseInterface dataBase, JPanel container) {
+    public OpenContact(String operando, Contacto c, DataBaseInterface dataBase, JPanel container) throws SQLException {
+        this.container = container;
+        inicializarAgenda(dataBase);
 
+        frame = new JFrame("Contacts Management System");
+        configurarFrame(frame);
+
+        boolean desactivado = true;
+        if (operando.equals("view")) {
+            desactivado = false;
+        }
+
+        JPanel table = crearFormularioContacto(c, desactivado);
+
+        if (operando.equals("edicion")) {
+            JButton cancel = GUI.button("Cancel", new Color(208, 11, 3));
+            cancelarAccion(cancel);
+
+            JButton save = GUI.button("Save", new Color(88, 179, 88));
+            guardarEdicionAccion(save, c, dataBase);
+
+            table.add(cancel);
+            table.add(save);
+        }
+
+        frame.add(table, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+    private void inicializarAgenda(DataBaseInterface dataBase) throws SQLException {
         try {
             agenda = Agenda.getAgenda(dataBase.getContactos(true));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
-        JFrame frame = new JFrame("Contacts Management System");
+    private void configurarFrame(JFrame frame) {
         frame.setLayout(new BorderLayout());
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setBackground(Color.white);
+    }
 
+    private JPanel crearFormularioContacto(Contacto contacto, boolean desactivado) {
         JPanel table = new JPanel(new GridLayout(11, 2, 15, 15));
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // table.add(GUI.label("UUID")).setForeground(Color.black);
-        // JLabel id = GUI.label(String.valueOf(c.id));
-        // id.setForeground(Color.black);
-        // table.add(id);
+        aniadirCampoValidacion(table, "Nombre: ", contacto.nombre, "^[a-zA-Z ]{1,20}$",
+                "La entrada nombre debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Nombre: ")).setForeground(Color.black);
-        JTextField nombre = GUI.textField(c.nombre);
-        table.add(nombre);
+        aniadirCampoValidacion(table, "Apellido: ", contacto.apellido, "^[a-zA-Z ]{1,20}$",
+                "La entrada apellido debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Apellido: ")).setForeground(Color.black);
-        JTextField apellido = GUI.textField(c.apellido);
-        table.add(apellido);
+        aniadirCampoValidacion(table, "Numero de telefono: ", contacto.numeroTelefono, "^[0-9+]{1,15}$",
+                "La entrada numero debe contener solo numeros y como maximo 15 caracteres, incluyendo el simbolo '+'.",
+                desactivado);
 
-        table.add(GUI.label("Numero de telefono: ")).setForeground(Color.black);
-        JTextField numeroTelefono = GUI.textField(c.numeroTelefono);
-        table.add(numeroTelefono);
+        aniadirCampoValidacion(table, "Email: ", contacto.email,
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
+                "La entrada email debe ser una direccion de correo electronico valida.", desactivado);
 
-        table.add(GUI.label("Email: ")).setForeground(Color.black);
-        JTextField email = GUI.textField(c.email);
-        table.add(email);
+        aniadirCampoValidacion(table, "Notas: ", contacto.notas, "^[\\s\\S]{0,50}$",
+                "La entrada notas debe tener un maximo de 50 caracteres.", desactivado);
 
-        table.add(GUI.label("Notas: ")).setForeground(Color.black);
-        JTextField notas = GUI.textField(c.notas);
-        table.add(notas);
+        aniadirCampoValidacion(table, "Pais: ", contacto.direccion.pais, "^[a-zA-Z ]{0,20}$",
+                "La entrada pais debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Pais: ")).setForeground(Color.black);
-        JTextField pais = GUI.textField(c.direccion.pais);
-        table.add(pais);
+        aniadirCampoValidacion(table, "Provincia: ", contacto.direccion.provincia, "^[a-zA-Z ]{0,20}$",
+                "La entrada provincia debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Provincia: ")).setForeground(Color.black);
-        JTextField provincia = GUI.textField(c.direccion.provincia);
-        table.add(provincia);
+        aniadirCampoValidacion(table, "Ciudad: ", contacto.direccion.ciudad, "^[a-zA-Z ]{0,20}$",
+                "La entrada ciudad debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Ciudad: ")).setForeground(Color.black);
-        JTextField ciudad = GUI.textField(c.direccion.ciudad);
-        table.add(ciudad);
+        aniadirCampoValidacion(table, "Calle: ", contacto.direccion.calle, "^[a-zA-Z0-9 ]{0,20}$",
+                "La entrada calle debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        table.add(GUI.label("Calle: ")).setForeground(Color.black);
-        JTextField calle = GUI.textField(c.direccion.calle);
-        table.add(calle);
+        return table;
+    }
 
-        JButton cancel = GUI.button("Cancel", new Color(208, 11, 3));
+    private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
+            String mensajeError, boolean desactivo) {
+        table.add(GUI.label(etiqueta)).setForeground(Color.black);
+        JTextField campo = GUI.textField(valor);
+        campo.setEditable(desactivo);
+        table.add(campo);
+        validacionesList.add(new Validaciones(regex, mensajeError, campo));
+    }
+
+    private void cancelarAccion(JButton cancel) {
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
         });
-        table.add(cancel);
+    }
 
-        JButton save = GUI.button("Save", new Color(88, 179, 88));
+    private void guardarAccion(JButton save, DataBaseInterface dataBase) {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Contacto contactoEditado = new Contacto(nombre.getText(), apellido.getText(), numeroTelefono.getText(),
-                        email.getText(), notas.getText(), pais.getText(),
-                        provincia.getText(), ciudad.getText(), calle.getText());
-                agenda.editarContacto(c.id,contactoEditado);
-                Refresh.refreshContacts((DataBase) dataBase, container);
-                frame.dispose();
+                if (validarCampos()) {
+                    Contacto nuevoContacto = new Contacto(
+                            validacionesList.get(0).campo.getText(),
+                            validacionesList.get(1).campo.getText(),
+                            validacionesList.get(2).campo.getText(),
+                            validacionesList.get(3).campo.getText(),
+                            validacionesList.get(4).campo.getText(),
+                            validacionesList.get(5).campo.getText(),
+                            validacionesList.get(6).campo.getText(),
+                            validacionesList.get(7).campo.getText(),
+                            validacionesList.get(8).campo.getText());
+                    agenda.agregarContacto(nuevoContacto);
+                    Refresh.refreshContacts((DataBase) dataBase, container);
+                    frame.dispose();
+                }
             }
         });
-        table.add(save);
+    }
 
-        frame.add(table, BorderLayout.CENTER);
-        frame.setVisible(true);
+    private void guardarEdicionAccion(JButton save, Contacto c, DataBaseInterface dataBase) {
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (validarCampos()) {
+                    Contacto contactoEditado = new Contacto(
+                            validacionesList.get(0).campo.getText(),
+                            validacionesList.get(1).campo.getText(),
+                            validacionesList.get(2).campo.getText(),
+                            validacionesList.get(3).campo.getText(),
+                            validacionesList.get(4).campo.getText(),
+                            validacionesList.get(5).campo.getText(),
+                            validacionesList.get(6).campo.getText(),
+                            validacionesList.get(7).campo.getText(),
+                            validacionesList.get(8).campo.getText());
+                    agenda.editarContacto(c.id, contactoEditado);
+                    Refresh.refreshContacts((DataBase) dataBase, container);
+                    frame.dispose();
+                }
+            }
+        });
+    }
 
+    private boolean validarCampos() {
+        for (Validaciones validacion : validacionesList) {
+            if (!validacion.validarEntrada(validacion.campo.getText())) {
+                JOptionPane.showMessageDialog(frame, validacion.mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        return true;
     }
 }

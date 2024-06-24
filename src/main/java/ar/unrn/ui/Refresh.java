@@ -17,7 +17,6 @@ public class Refresh {
     private static final String row1 = "#1a2c32";
     private static final String row2 = "#2d464c";
 
-
     public static void refreshContacts(DataBase dataBase, JPanel container) {
         container.removeAll();
         container.repaint();
@@ -78,7 +77,12 @@ public class Refresh {
             view.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OpenContact(c, dataBase, container);
+                    try {
+                        new OpenContact("view", c, dataBase, container);
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             });
             containerButton.add(view);
@@ -87,7 +91,12 @@ public class Refresh {
             edit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OpenContact(c, dataBase, container);
+                    try {
+                        new OpenContact("edicion", c, dataBase, container);
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             });
             containerButton.add(edit);

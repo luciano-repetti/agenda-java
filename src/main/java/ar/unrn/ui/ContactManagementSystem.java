@@ -31,15 +31,16 @@ public class ContactManagementSystem {
         agenda.registrarObserver((Observer) database);
 
         JFrame frame = new JFrame("Agenda");
-        //frame.setBackground(Color.decode("#5faab1"));
+        // frame.setBackground(Color.decode("#5faab1"));
+
         frame.setLayout(new BorderLayout());
         frame.setSize(1200, 700);
         frame.setLocationRelativeTo(null);
-        //frame.getContentPane().setBackground(Color.decode("#5faab1"));
+        // frame.getContentPane().setBackground(Color.decode("#5faab1"));
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 50));
         top.setBackground(Color.decode(topColor));
-        //frame.setBackground(null);
+        // frame.setBackground(null);
 
         JLabel title = new JLabel("Welcome to the Contact Management System");
         title.setFont(new Font("Calibri", Font.BOLD, 35));
