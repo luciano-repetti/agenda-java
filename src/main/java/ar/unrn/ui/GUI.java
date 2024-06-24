@@ -30,4 +30,24 @@ public class GUI {
         textField.setFont(new Font("Tahoma", Font.PLAIN, 17));
         return textField;
     }
+
+    public static JScrollPane textArea(String text) {
+        JTextArea campo = new JTextArea(text);
+        campo.setLineWrap(true);
+        campo.setWrapStyleWord(true);
+        campo.setEnabled(false);
+        campo.setColumns(20);
+        campo.setRows(1);
+
+        campo.setFont(new Font("Tahoma", Font.PLAIN, 17));
+
+        campo.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        campo.setDisabledTextColor(Color.BLACK);
+        campo.setBackground(new Color(238, 238, 238));
+
+        JScrollPane scrollPane = new JScrollPane(campo);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        return scrollPane;
+    }
 }

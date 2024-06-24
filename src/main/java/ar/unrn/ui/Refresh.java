@@ -44,7 +44,7 @@ public class Refresh {
 
             GridBagConstraints panelGbc = new GridBagConstraints();
             panelGbc.fill = GridBagConstraints.BOTH;
-            panelGbc.insets = new Insets(5, 10, 5, 10);
+            panelGbc.insets = new Insets(5, 10, 5, 0);
             panelGbc.weightx = 1.0;
 
             panelGbc.gridx = 0;
@@ -67,18 +67,20 @@ public class Refresh {
             panel.add(GUI.label(c.direccion.calle), panelGbc);
 
             panelGbc.gridx = 9;
-            JPanel containerButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+            panelGbc.weightx = 0.0;
+            panelGbc.anchor = GridBagConstraints.EAST;
 
+            JPanel containerButton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
             containerButton.setBackground(panel.getBackground());
 
             JButton view = GUI.button("View", new Color(4, 57, 94));
+            view.setCursor(new Cursor(Cursor.HAND_CURSOR));
             view.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
                         new OpenContact("view", c, dataBase, container);
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -86,13 +88,13 @@ public class Refresh {
             containerButton.add(view);
 
             JButton edit = GUI.button("Edit", new Color(37, 162, 68));
+            edit.setCursor(new Cursor(Cursor.HAND_CURSOR));
             edit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
                         new OpenContact("edicion", c, dataBase, container);
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -100,6 +102,7 @@ public class Refresh {
             containerButton.add(edit);
 
             JButton delete = GUI.button("Delete", new Color(193, 18, 31));
+            delete.setCursor(new Cursor(Cursor.HAND_CURSOR));
             delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

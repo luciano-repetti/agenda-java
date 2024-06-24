@@ -127,10 +127,17 @@ public class OpenContact {
     private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
             String mensajeError, boolean desactivo) {
         table.add(GUI.label(etiqueta)).setForeground(Color.black);
-        JTextField campo = GUI.textField(valor);
-        campo.setEditable(desactivo);
-        table.add(campo);
-        validacionesList.add(new Validaciones(regex, mensajeError, campo));
+        if (desactivo) {
+            JTextField campo = GUI.textField(valor);
+            campo.setEditable(desactivo);
+            table.add(campo);
+            validacionesList.add(new Validaciones(regex, mensajeError, campo));
+        } else {
+            JScrollPane campo = GUI.textArea(valor);
+
+            table.add(campo);
+        }
+
     }
 
     private void cancelarAccion(JButton cancel) {
