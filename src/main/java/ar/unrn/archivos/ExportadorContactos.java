@@ -8,11 +8,22 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Clase que se encarga de exportar los contactos de una agenda a un archivo de texto.
+ */
 public class ExportadorContactos {
 
+    /**
+     * Prefijo y extensión del archivo de exportación.
+     */
     private static final String FILE_PREFIX = "exportacion_contacto";
     private static final String FILE_EXTENSION = ".txt";
 
+    /**
+     * Exporta los contactos de la agenda a un archivo de texto.
+     *
+     * @param agenda La agenda cuyos contactos se desean exportar.
+     */
     public void exportarContactos(Agenda agenda) {
         String nombreArchivo = generarNombreArchivo();
 
@@ -33,6 +44,11 @@ public class ExportadorContactos {
         }
     }
 
+    /**
+     * Genera un nombre de archivo único para la exportación de contactos.
+     *
+     * @return El nombre del archivo.
+     */
     private String generarNombreArchivo() {
         int numeroSecuencia = 1;
         String nombreArchivo = FILE_PREFIX + numeroSecuencia + FILE_EXTENSION;
@@ -45,6 +61,13 @@ public class ExportadorContactos {
         return nombreArchivo;
     }
 
+    /**
+     * Escribe los detalles de un contacto en el archivo de exportación.
+     *
+     * @param writer   El BufferedWriter utilizado para escribir en el archivo.
+     * @param contacto El contacto cuyos detalles se desean escribir.
+     * @throws IOException Si ocurre un error al escribir en el archivo.
+     */
     private void escribirContacto(BufferedWriter writer, Contacto contacto) throws IOException {
         writer.write("Nombre: " + contacto.nombre + "\n");
         writer.write("Apellido: " + contacto.apellido + "\n");
@@ -57,6 +80,12 @@ public class ExportadorContactos {
         writer.write("Calle: " + contacto.direccion.calle + "\n");
     }
 
+    /**
+     * Verifica si un archivo con el nombre especificado ya existe.
+     *
+     * @param nombreArchivo El nombre del archivo.
+     * @return true si el archivo existe, false en caso contrario.
+     */
     public static boolean existeArchivo(String nombreArchivo) {
         File archivo = new File(nombreArchivo);
         return archivo.exists();
