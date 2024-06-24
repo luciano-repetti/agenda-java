@@ -103,7 +103,14 @@ public class OpenContact {
         frame.setVisible(true);
     }
 
-    public OpenContact(Contacto c) {
+    public OpenContact(Contacto c, DataBaseInterface dataBase, JPanel container) {
+
+        try {
+            agenda = Agenda.getAgenda(dataBase.getContactos(true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         JFrame frame = new JFrame("Contacts Management System");
         frame.setLayout(new BorderLayout());
         frame.setSize(800, 600);
@@ -128,8 +135,8 @@ public class OpenContact {
         table.add(apellido);
 
         table.add(GUI.label("Numero de telefono: ")).setForeground(Color.black);
-        JTextField numero = GUI.textField(c.numeroTelefono);
-        table.add(numero);
+        JTextField numeroTelefono = GUI.textField(c.numeroTelefono);
+        table.add(numeroTelefono);
 
         table.add(GUI.label("Email: ")).setForeground(Color.black);
         JTextField email = GUI.textField(c.email);
@@ -165,6 +172,17 @@ public class OpenContact {
         table.add(cancel);
 
         JButton save = GUI.button("Save", new Color(88, 179, 88));
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Contacto contactoEditado = new Contacto(nombre.getText(), apellido.getText(), numeroTelefono.getText(),
+                        email.getText(), notas.getText(), pais.getText(),
+                        provincia.getText(), ciudad.getText(), calle.getText());
+                agenda.editarContacto(c.id,contactoEditado);
+                Refresh.refreshContacts((DataBase) dataBase, container);
+                frame.dispose();
+            }
+        });
         table.add(save);
 
         frame.add(table, BorderLayout.CENTER);

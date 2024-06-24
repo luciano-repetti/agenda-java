@@ -13,6 +13,10 @@ import java.sql.SQLException;
 public class Refresh {
 
     private static Agenda agenda;
+    // Colors
+    private static final String row1 = "#1a2c32";
+    private static final String row2 = "#2d464c";
+
 
     public static void refreshContacts(DataBase dataBase, JPanel container) {
         container.removeAll();
@@ -34,9 +38,9 @@ public class Refresh {
         for (Contacto c : agenda) {
             i++;
             JPanel panel = new JPanel(new GridBagLayout());
-            panel.setBackground(Color.decode("#4A525A"));
+            panel.setBackground(Color.decode(row1));
             if (i % 2 == 0)
-                panel.setBackground(Color.decode("#24272B"));
+                panel.setBackground(Color.decode(row2));
             panel.setPreferredSize(new Dimension(100, 55));
 
             GridBagConstraints panelGbc = new GridBagConstraints();
@@ -74,7 +78,7 @@ public class Refresh {
             view.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OpenContact(c);
+                    new OpenContact(c, dataBase, container);
                 }
             });
             containerButton.add(view);
@@ -83,7 +87,7 @@ public class Refresh {
             edit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OpenContact(c);
+                    new OpenContact(c, dataBase, container);
                 }
             });
             containerButton.add(edit);

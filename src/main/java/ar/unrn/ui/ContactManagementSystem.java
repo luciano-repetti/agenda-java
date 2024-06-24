@@ -18,6 +18,10 @@ public class ContactManagementSystem {
     private static DataBaseInterface database;
     private static Agenda agenda;
 
+    // Colors
+    private static final String topColor = "#356169";
+    private static final String bgColor = "#5faab1";
+
     public static void main(String[] args) throws SQLException {
         databaseUrl = "test4.db";
 
@@ -27,13 +31,15 @@ public class ContactManagementSystem {
         agenda.registrarObserver((Observer) database);
 
         JFrame frame = new JFrame("Agenda");
+        //frame.setBackground(Color.decode("#5faab1"));
         frame.setLayout(new BorderLayout());
         frame.setSize(1200, 700);
         frame.setLocationRelativeTo(null);
-        frame.getContentPane().setBackground(new Color(0, 38, 80));
+        //frame.getContentPane().setBackground(Color.decode("#5faab1"));
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 50));
-        frame.setBackground(null);
+        top.setBackground(Color.decode(topColor));
+        //frame.setBackground(null);
 
         JLabel title = new JLabel("Welcome to the Contact Management System");
         title.setFont(new Font("Calibri", Font.BOLD, 35));
@@ -63,7 +69,7 @@ public class ContactManagementSystem {
 
         gridLayout = new GridLayout(10, 1, 0, 0);
         table = new JPanel(gridLayout);
-        table.setBackground(Color.white);
+        table.setBackground(Color.decode(bgColor));
 
         Refresh.refreshContacts((DataBase) database, table);
 
