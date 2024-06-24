@@ -8,7 +8,6 @@ public class GUI {
         JLabel label = new JLabel(text);
         label.setForeground(Color.decode("#F1F1F1"));
         label.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        // label.setHorizontalAlignment(JLabel.CENTER);
         label.setPreferredSize(new Dimension(100, 55));
         return label;
     }
@@ -21,7 +20,6 @@ public class GUI {
         button.setFont(new Font("Tahoma", Font.PLAIN, 17));
         button.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         button.setFocusPainted(false);
-        // button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
 

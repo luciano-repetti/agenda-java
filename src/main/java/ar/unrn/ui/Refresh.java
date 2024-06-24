@@ -47,8 +47,6 @@ public class Refresh {
             panelGbc.insets = new Insets(5, 10, 5, 10);
             panelGbc.weightx = 1.0;
 
-            // panelGbc.gridx = 0;
-            // panel.add(GUI.label(c.id.toString()), panelGbc);
             panelGbc.gridx = 0;
             panel.add(GUI.label(c.nombre), panelGbc);
             panelGbc.gridx = 1;
@@ -70,7 +68,7 @@ public class Refresh {
 
             panelGbc.gridx = 9;
             JPanel containerButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-
+            
             containerButton.setBackground(panel.getBackground());
 
             JButton view = GUI.button("View", new Color(4, 57, 94));

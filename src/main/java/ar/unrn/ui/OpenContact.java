@@ -99,7 +99,7 @@ public class OpenContact {
                 "La entrada apellido debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
         aniadirCampoValidacion(table, "Numero de telefono: ", contacto.numeroTelefono, "^[0-9+]{1,15}$",
-                "La entrada numero debe contener solo numeros y como maximo 15 caracteres, incluyendo el simbolo '+'.",
+                "La entrada numero de telefono debe contener solo numeros y como maximo 15 caracteres, incluyendo el simbolo '+'.",
                 desactivado);
 
         aniadirCampoValidacion(table, "Email: ", contacto.email,

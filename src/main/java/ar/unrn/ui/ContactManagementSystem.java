@@ -12,44 +12,36 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class ContactManagementSystem {
-    private static String databaseUrl;
     private static GridLayout gridLayout;
     private static JPanel table;
-    private static DataBaseInterface database;
-    private static Agenda agenda;
 
     // Colors
     private static final String topColor = "#356169";
     private static final String bgColor = "#5faab1";
 
-    public static void main(String[] args) throws SQLException {
-        databaseUrl = "test4.db";
-
-        DataBaseInterface database = new DataBase(databaseUrl);
-        agenda = Agenda.getAgenda(database.getContactos(true));
+    public ContactManagementSystem( String databaseUrl,DataBaseInterface database, Agenda agenda ) throws SQLException {
 
         agenda.registrarObserver((Observer) database);
 
         JFrame frame = new JFrame("Agenda");
-        // frame.setBackground(Color.decode("#5faab1"));
 
         frame.setLayout(new BorderLayout());
         frame.setSize(1200, 700);
         frame.setLocationRelativeTo(null);
-        // frame.getContentPane().setBackground(Color.decode("#5faab1"));
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 50));
         top.setBackground(Color.decode(topColor));
-        // frame.setBackground(null);
 
-        JLabel title = new JLabel("Welcome to the Contact Management System");
+        JLabel title = new JLabel("Bienvenido a la Agenda de Contactos");
         title.setFont(new Font("Calibri", Font.BOLD, 35));
+        title.setForeground(Color.white);
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setVerticalAlignment(JLabel.CENTER);
         top.add(title);
 
         JButton newContact = new JButton("Add Contact");
         newContact.setFont(new Font("Tahoma", Font.BOLD, 18));
+        newContact.setFocusable(false);
         newContact.setBackground(new Color(88, 179, 88));
         newContact.setForeground(Color.white);
         newContact.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
