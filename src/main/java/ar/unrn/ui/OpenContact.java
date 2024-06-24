@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que gestiona la ventana para agregar o editar contactos.
+ */
 public class OpenContact {
 
     private static Agenda agenda;
@@ -21,6 +24,13 @@ public class OpenContact {
     private JFrame frame;
     private JPanel container;
 
+    /**
+     * Constructor para crear un nuevo contacto.
+     *
+     * @param dataBase  La interfaz de la base de datos.
+     * @param container El contenedor donde se mostrarán los contactos.
+     * @throws SQLException Si ocurre un error de acceso a la base de datos.
+     */
     public OpenContact(DataBaseInterface dataBase, JPanel container) throws SQLException {
         this.container = container;
         inicializarAgenda(dataBase);
@@ -43,6 +53,15 @@ public class OpenContact {
         frame.setVisible(true);
     }
 
+    /**
+     * Constructor para ver o editar un contacto existente.
+     *
+     * @param operando  La operación a realizar ("view" o "edicion").
+     * @param c         El contacto a ver o editar.
+     * @param dataBase  La interfaz de la base de datos.
+     * @param container El contenedor donde se mostrarán los contactos.
+     * @throws SQLException Si ocurre un error de acceso a la base de datos.
+     */
     public OpenContact(String operando, Contacto c, DataBaseInterface dataBase, JPanel container) throws SQLException {
         this.container = container;
         inicializarAgenda(dataBase);
@@ -72,6 +91,12 @@ public class OpenContact {
         frame.setVisible(true);
     }
 
+    /**
+     * Inicializa la agenda con los contactos de la base de datos.
+     *
+     * @param dataBase La interfaz de la base de datos.
+     * @throws SQLException Si ocurre un error de acceso a la base de datos.
+     */
     private void inicializarAgenda(DataBaseInterface dataBase) throws SQLException {
         try {
             agenda = Agenda.getAgenda(dataBase.getContactos(true));
@@ -80,6 +105,11 @@ public class OpenContact {
         }
     }
 
+    /**
+     * Configura el marco de la ventana.
+     *
+     * @param frame El marco de la ventana.
+     */
     private void configurarFrame(JFrame frame) {
         frame.setLayout(new BorderLayout());
         frame.setSize(800, 600);
@@ -87,6 +117,13 @@ public class OpenContact {
         frame.getContentPane().setBackground(Color.white);
     }
 
+    /**
+     * Crea el formulario de contacto.
+     *
+     * @param contacto    El contacto a mostrar o editar.
+     * @param desactivado Indica si los campos están desactivados.
+     * @return Un panel con el formulario de contacto.
+     */
     private JPanel crearFormularioContacto(Contacto contacto, boolean desactivado) {
         JPanel table = new JPanel(new GridLayout(11, 2, 15, 15));
         table.setBackground(Color.white);
@@ -124,6 +161,16 @@ public class OpenContact {
         return table;
     }
 
+    /**
+     * Añade un campo de validación al formulario.
+     *
+     * @param table        El panel donde se añade el campo.
+     * @param etiqueta     La etiqueta del campo.
+     * @param valor        El valor del campo.
+     * @param regex        La expresión regular para validar el campo.
+     * @param mensajeError El mensaje de error si la validación falla.
+     * @param desactivo    Indica si el campo está desactivado.
+     */
     private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
             String mensajeError, boolean desactivo) {
         table.add(GUI.label(etiqueta)).setForeground(Color.black);
@@ -140,6 +187,11 @@ public class OpenContact {
 
     }
 
+    /**
+     * Configura la acción del botón cancelar.
+     *
+     * @param cancel El botón cancelar.
+     */
     private void cancelarAccion(JButton cancel) {
         cancel.addActionListener(new ActionListener() {
             @Override
@@ -149,6 +201,12 @@ public class OpenContact {
         });
     }
 
+    /**
+     * Configura la acción del botón guardar para un nuevo contacto.
+     *
+     * @param save     El botón guardar.
+     * @param dataBase La interfaz de la base de datos.
+     */
     private void guardarAccion(JButton save, DataBaseInterface dataBase) {
         save.addActionListener(new ActionListener() {
             @Override
@@ -172,6 +230,14 @@ public class OpenContact {
         });
     }
 
+    /**
+     * Configura la acción del botón guardar para la edición de un contacto
+     * existente.
+     *
+     * @param save     El botón guardar.
+     * @param c        El contacto a editar.
+     * @param dataBase La interfaz de la base de datos.
+     */
     private void guardarEdicionAccion(JButton save, Contacto c, DataBaseInterface dataBase) {
         save.addActionListener(new ActionListener() {
             @Override
@@ -195,6 +261,11 @@ public class OpenContact {
         });
     }
 
+    /**
+     * Valida los campos del formulario.
+     *
+     * @return true si todos los campos son válidos, false en caso contrario.
+     */
     private boolean validarCampos() {
         for (Validaciones validacion : validacionesList) {
             if (!validacion.validarEntrada(validacion.campo.getText())) {

@@ -12,6 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * Clase que representa el Sistema de Gestión de Contactos.
+ * Configura la interfaz gráfica de usuario y gestiona la interacción con la
+ * base de datos y la agenda de contactos.
+ */
 public class ContactManagementSystem {
     private static GridLayout gridLayout;
     private static JPanel table;
@@ -20,6 +25,16 @@ public class ContactManagementSystem {
     private static final String topColor = "#356169";
     private static final String bgColor = "#5faab1";
 
+    /**
+     * Constructor de la clase ContactManagementSystem.
+     * Configura la interfaz gráfica de usuario y registra el observer para la
+     * agenda.
+     *
+     * @param databaseUrl La URL de la base de datos.
+     * @param database    La interfaz de la base de datos.
+     * @param agenda      La agenda de contactos.
+     * @throws SQLException Si ocurre un error de acceso a la base de datos.
+     */
     public ContactManagementSystem(String databaseUrl, DataBaseInterface database, Agenda agenda) throws SQLException {
 
         agenda.registrarObserver((Observer) database);

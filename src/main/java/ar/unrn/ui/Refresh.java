@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * Clase que gestiona la actualización de la lista de contactos en el
+ * contenedor.
+ */
 public class Refresh {
 
     private static Agenda agenda;
@@ -17,6 +21,12 @@ public class Refresh {
     private static final String row1 = "#1a2c32";
     private static final String row2 = "#2d464c";
 
+    /**
+     * Actualiza la lista de contactos en el contenedor.
+     *
+     * @param dataBase  La base de datos de contactos.
+     * @param container El contenedor donde se mostrarán los contactos.
+     */
     public static void refreshContacts(DataBase dataBase, JPanel container) {
         container.removeAll();
         container.repaint();
