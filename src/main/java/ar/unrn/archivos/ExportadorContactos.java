@@ -3,13 +3,14 @@ package ar.unrn.archivos;
 import ar.unrn.agenda.Agenda;
 import ar.unrn.contactos.Contacto;
 
-import java.io.File;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
- * Clase que se encarga de exportar los contactos de una agenda a un archivo de texto.
+ * Clase que se encarga de exportar los contactos de una agenda a un archivo de
+ * texto.
  */
 public class ExportadorContactos {
 
@@ -23,25 +24,26 @@ public class ExportadorContactos {
      * Exporta los contactos de la agenda a un archivo de texto.
      *
      * @param agenda La agenda cuyos contactos se desean exportar.
+     * @throws IOException
      */
-    public void exportarContactos(Agenda agenda) {
+    public String exportarContactos(Agenda agenda) throws IOException {
         String nombreArchivo = generarNombreArchivo();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            writer.write("Cantidad de contactos: " + agenda.cantidadContactos() + "\n\n");
+        StringBuilder contenido = new StringBuilder();
+        contenido.append("Cantidad de contactos: ").append(agenda.cantidadContactos()).append("\n\n");
 
-            int indice = 1;
-            for (Contacto contacto : agenda) {
-                writer.write("Contacto " + indice + ":\n");
-                escribirContacto(writer, contacto);
-                writer.write("-----------------------------------------------\n\n");
-                indice++;
-            }
-
-            System.out.println("Contactos exportados correctamente en el archivo: " + nombreArchivo);
-        } catch (IOException e) {
-            System.err.println("Error al exportar los contactos: " + e.getMessage());
+        int indice = 1;
+        for (Contacto contacto : agenda) {
+            contenido.append("Contacto ").append(indice).append(":\n");
+            escribirContacto(contenido, contacto);
+            contenido.append("-----------------------------------------------\n\n");
+            indice++;
         }
+
+        Path archivo = Paths.get(nombreArchivo);
+        Files.writeString(archivo, contenido.toString());
+        System.out.println("Contactos exportados correctamente en el archivo: " + nombreArchivo);
+        return archivo.toAbsolutePath().toString();
     }
 
     /**
@@ -62,22 +64,22 @@ public class ExportadorContactos {
     }
 
     /**
-     * Escribe los detalles de un contacto en el archivo de exportación.
+     * Escribe los detalles de un contacto en el StringBuilder de contenido.
      *
-     * @param writer   El BufferedWriter utilizado para escribir en el archivo.
-     * @param contacto El contacto cuyos detalles se desean escribir.
-     * @throws IOException Si ocurre un error al escribir en el archivo.
+     * @param contenido El StringBuilder utilizado para construir el contenido del
+     *                  archivo.
+     * @param contacto  El contacto cuyos detalles se desean escribir.
      */
-    private void escribirContacto(BufferedWriter writer, Contacto contacto) throws IOException {
-        writer.write("Nombre: " + contacto.nombre + "\n");
-        writer.write("Apellido: " + contacto.apellido + "\n");
-        writer.write("Numero de telefono: " + contacto.numeroTelefono + "\n");
-        writer.write("Email: " + contacto.email + "\n");
-        writer.write("Notas: " + contacto.notas + "\n");
-        writer.write("Pais: " + contacto.direccion.pais + "\n");
-        writer.write("Provincia: " + contacto.direccion.provincia + "\n");
-        writer.write("Ciudad: " + contacto.direccion.ciudad + "\n");
-        writer.write("Calle: " + contacto.direccion.calle + "\n");
+    private void escribirContacto(StringBuilder contenido, Contacto contacto) {
+        contenido.append("Nombre: ").append(contacto.nombre).append("\n");
+        contenido.append("Apellido: ").append(contacto.apellido).append("\n");
+        contenido.append("Numero de telefono: ").append(contacto.numeroTelefono).append("\n");
+        contenido.append("Email: ").append(contacto.email).append("\n");
+        contenido.append("Notas: ").append(contacto.notas).append("\n");
+        contenido.append("Pais: ").append(contacto.direccion.pais).append("\n");
+        contenido.append("Provincia: ").append(contacto.direccion.provincia).append("\n");
+        contenido.append("Ciudad: ").append(contacto.direccion.ciudad).append("\n");
+        contenido.append("Calle: ").append(contacto.direccion.calle).append("\n");
     }
 
     /**
@@ -87,8 +89,8 @@ public class ExportadorContactos {
      * @return true si el archivo existe, false en caso contrario.
      */
     public static boolean existeArchivo(String nombreArchivo) {
-        File archivo = new File(nombreArchivo);
-        return archivo.exists();
+        Path archivo = Paths.get(nombreArchivo);
+        return Files.exists(archivo);
     }
 
 }
