@@ -77,6 +77,7 @@ public class DataBase implements DataBaseInterface, Observer {
     public void postContacto(Contacto contacto) throws SQLException {
         List<Object> data = contacto.deshidratarContacto();
         String sql = "INSERT INTO usuarios (uuid, nombre, apellido, numeroTelefono, email, notas, pais, provincia, ciudad, calle, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        data.add(true);
         try (PreparedStatement statement = conexion.prepareStatement(sql)) {
             for (int i = 0; i < data.size(); i++) {
                 statement.setObject(i + 1, data.get(i));
@@ -128,8 +129,12 @@ public class DataBase implements DataBaseInterface, Observer {
         List<Object> data = contacto.deshidratarContacto();
         String sql = "UPDATE usuarios SET nombre = ?, apellido = ?, numeroTelefono = ?, email = ?, notas = ?, pais = ?, provincia = ?, ciudad = ?, calle = ? WHERE uuid = ?";
         try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-            for (int i = 0; i < data.size(); i++) {
-                statement.setObject(i + 1, data.get(i));
+            for (int i = 1; i <= data.size(); i++) {
+                if (i == 10) {
+                    statement.setObject(i, data.get(0).toString());
+                } else {
+                    statement.setObject(i, data.get(i));
+                }
             }
             statement.executeUpdate();
 
