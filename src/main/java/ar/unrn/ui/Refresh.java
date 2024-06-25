@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.UUID;
+
 
 /**
  * Clase que gestiona la actualización de la lista de contactos en el
