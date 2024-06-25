@@ -50,7 +50,7 @@ public class Contacto {
         this.direccion = new Direccion(pais, provincia, ciudad, calle);
     }
 
-    public List<Object> toList() {
+    public List<Object> deshidratarContacto() {
         List<Object> list = new ArrayList<>();
         list.add(id.toString());
         list.add(nombre);
@@ -58,7 +58,7 @@ public class Contacto {
         list.add(numeroTelefono);
         list.add(email);
         list.add(notas);
-        list.addAll(direccion.toList());
+        list.addAll(direccion.deshidratarDireccion());
         list.add(active);
         return list;
     }
@@ -86,7 +86,7 @@ public class Contacto {
         this.numeroTelefono = contacto.numeroTelefono;
         this.email = contacto.email;
         this.notas = contacto.notas;
-        this.direccion.hidratarDireccion(contacto.direccion.toList());
+        this.direccion.hidratarDireccion(contacto.direccion.deshidratarDireccion());
     }
 
     @Override

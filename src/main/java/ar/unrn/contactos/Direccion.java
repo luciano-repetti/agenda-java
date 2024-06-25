@@ -16,7 +16,7 @@ class Direccion {
         this.calle = calle;
     }
 
-    public List<Object> toList() {
+    public List<Object> deshidratarDireccion() {
         List<Object> list = new ArrayList<>();
         list.add(pais);
         list.add(provincia);
