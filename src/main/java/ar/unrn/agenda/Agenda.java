@@ -190,23 +190,6 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
         return new ArregloIterator();
     }
 
-    /**
-     * Modifica un atributo específico de un contacto en la agenda por su ID y
-     * notifica a los observadores.
-     *
-     * @param id       El ID del contacto a modificar.
-     * @param atributo El atributo a modificar.
-     * @param valor    El nuevo valor del atributo.
-     */
-    // public void modificarAtributoContacto(UUID id, String atributo, String valor)
-    // throws SQLException {
-    // for (Contacto contacto : contactos) {
-    // if (contacto.id.equals(id)) {
-    // contacto.actualizarAtributo(atributo, valor);
-    // notificarObserversUpdate(contacto);
-    // }
-    // }
-    // }
 
     /**
      * Edita un contacto existente en la agenda por su ID y notifica a los
