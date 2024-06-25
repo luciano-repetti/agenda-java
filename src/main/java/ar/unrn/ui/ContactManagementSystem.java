@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -76,9 +77,14 @@ public class ContactManagementSystem {
             public void actionPerformed(ActionEvent e) {
                 ExportadorContactos exportador = new ExportadorContactos();
                 try {
-                    exportador.exportarContactos(Agenda.getAgenda(database.getContactos(true)));
+                    String ruta = exportador.exportarContactos(Agenda.getAgenda(database.getContactos(true)));
+                    System.out.println(ruta);
+                    JOptionPane.showMessageDialog(frame, "La ruta donde se guardo el archivo es: " + ruta,
+                            "Archivo guardado con exito",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
 
