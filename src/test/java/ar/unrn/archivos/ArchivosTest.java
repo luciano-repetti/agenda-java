@@ -4,27 +4,21 @@ import ar.unrn.agenda.Agenda;
 import ar.unrn.contactos.Contacto;
 import org.junit.jupiter.api.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @DisplayName("Test de Archivos")
 class ArchivosTest {
 
-    /**
-     * Este test es una plantilla.
-     */
-    @Test
-    @DisplayName("Completar que se esta probando")
-    void testPlantilla() {
-        ;//
-    }
-
-
     private Agenda agenda;
     private ExportadorContactos exportador;
-    private List<File> archivosCreados;
+    private List<Path> archivosCreados;
 
     @BeforeEach
     public void setUp() {
@@ -34,32 +28,33 @@ class ArchivosTest {
     }
 
     @AfterEach
-    public void tearDown() {
-        for (File archivo : archivosCreados) {
-            if (archivo.exists()) {
-                archivo.delete();
+    public void tearDown() throws IOException {
+        for (Path archivo : archivosCreados) {
+            if (Files.exists(archivo)) {
+                Files.delete(archivo);
             }
         }
         archivosCreados.clear();
     }
 
     @Test
+    @DisplayName("Exportar contactos a archivo de texto")
     public void testExportarContactos() throws IOException {
-        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas1", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
+        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas1", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2",
+                "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
         agenda.agregarContacto(contacto1);
         agenda.agregarContacto(contacto2);
 
-        exportador.exportarContactos(agenda);
+        String archivoExportado = exportador.exportarContactos(agenda);
+        archivosCreados.add(Path.of(archivoExportado));
 
-        File archivoExportado = new File("exportacion_contacto1.txt");
-        archivosCreados.add(archivoExportado);
-
-        Assertions.assertTrue(archivoExportado.exists());
+        Assertions.assertTrue(Files.exists(Path.of(archivoExportado)));
 
         try (BufferedReader reader = new BufferedReader(new FileReader(archivoExportado))) {
-            String linea;
             StringBuilder contenido = new StringBuilder();
+            String linea;
             while ((linea = reader.readLine()) != null) {
                 contenido.append(linea).append("\n");
             }
@@ -89,41 +84,21 @@ class ArchivosTest {
                     "-----------------------------------------------\n\n";
 
             Assertions.assertEquals(contenidoEsperado, contenido.toString());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-//    @Test
-//    public void testGenerarNombreArchivo() {
-//        String nombreArchivo1 = exportador.exportarContactos();
-//        String nombreArchivo2 = exportador.generarNombreArchivo();
-//
-//        File archivo1 = new File(nombreArchivo1);
-//        File archivo2 = new File(nombreArchivo2);
-//
-//        archivosCreados.add(archivo1);
-//        archivosCreados.add(archivo2);
-//
-//        Assertions.assertNotEquals(nombreArchivo1, nombreArchivo2);
-//    }
-
     @Test
-    public void testExisteArchivo() {
-        File archivo = new File("test_archivo_existente.txt");
+    @DisplayName("Verificar existencia de archivo")
+    public void testExisteArchivo() throws IOException {
+        Path archivo = Files.createTempFile("test_archivo_existente", ".txt");
         archivosCreados.add(archivo);
 
-        try {
-            if (!archivo.exists()) {
-                archivo.createNewFile();
-            }
+        Assertions.assertTrue(Files.exists(archivo));
 
-            Assertions.assertTrue(ExportadorContactos.existeArchivo("test_archivo_existente.txt"));
-        } catch (IOException e) {
-            Assertions.fail("No se pudo crear el archivo de prueba");
+        try {
+            Assertions.assertTrue(ExportadorContactos.existeArchivo(archivo.toString()));
+        } finally {
+            Files.deleteIfExists(archivo);
         }
     }
 }
-
