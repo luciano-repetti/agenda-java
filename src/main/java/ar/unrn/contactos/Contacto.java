@@ -17,16 +17,16 @@ public class Contacto {
     /**
      * Constructor para crear un contacto con un UUID específico.
      *
-     * @param uuid          El UUID del contacto.
-     * @param nombre        El nombre del contacto.
-     * @param apellido      El apellido del contacto.
+     * @param uuid           El UUID del contacto.
+     * @param nombre         El nombre del contacto.
+     * @param apellido       El apellido del contacto.
      * @param numeroTelefono El número de teléfono del contacto.
-     * @param email         El correo electrónico del contacto.
-     * @param notas         Las notas adicionales del contacto.
-     * @param pais          El país de la dirección del contacto.
-     * @param provincia     La provincia de la dirección del contacto.
-     * @param ciudad        La ciudad de la dirección del contacto.
-     * @param calle         La calle de la dirección del contacto.
+     * @param email          El correo electrónico del contacto.
+     * @param notas          Las notas adicionales del contacto.
+     * @param pais           El país de la dirección del contacto.
+     * @param provincia      La provincia de la dirección del contacto.
+     * @param ciudad         La ciudad de la dirección del contacto.
+     * @param calle          La calle de la dirección del contacto.
      */
     public Contacto(String uuid, String nombre, String apellido, String numeroTelefono, String email, String notas,
             String pais,
@@ -44,15 +44,15 @@ public class Contacto {
     /**
      * Constructor para crear un contacto con un UUID generado automáticamente.
      *
-     * @param nombre        El nombre del contacto.
-     * @param apellido      El apellido del contacto.
+     * @param nombre         El nombre del contacto.
+     * @param apellido       El apellido del contacto.
      * @param numeroTelefono El número de teléfono del contacto.
-     * @param email         El correo electrónico del contacto.
-     * @param notas         Las notas adicionales del contacto.
-     * @param pais          El país de la dirección del contacto.
-     * @param provincia     La provincia de la dirección del contacto.
-     * @param ciudad        La ciudad de la dirección del contacto.
-     * @param calle         La calle de la dirección del contacto.
+     * @param email          El correo electrónico del contacto.
+     * @param notas          Las notas adicionales del contacto.
+     * @param pais           El país de la dirección del contacto.
+     * @param provincia      La provincia de la dirección del contacto.
+     * @param ciudad         La ciudad de la dirección del contacto.
+     * @param calle          La calle de la dirección del contacto.
      */
     public Contacto(String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
             String provincia, String ciudad, String calle) {
@@ -83,7 +83,8 @@ public class Contacto {
     }
 
     /**
-     * Modifica los detalles del contacto actual con los detalles del contacto proporcionado.
+     * Modifica los detalles del contacto actual con los detalles del contacto
+     * proporcionado.
      *
      * @param contacto El contacto con los nuevos detalles.
      */

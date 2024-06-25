@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,13 @@ class ArchivosTest {
                 "Buenos Aires", "CABA", "Calle Falsa 123");
         Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2",
                 "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
-        agenda.agregarContacto(contacto1);
-        agenda.agregarContacto(contacto2);
+        try {
+            agenda.agregarContacto(contacto1);
+            agenda.agregarContacto(contacto2);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         String archivoExportado = exportador.exportarContactos(agenda);
         archivosCreados.add(Path.of(archivoExportado));

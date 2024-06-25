@@ -5,9 +5,9 @@ import ar.unrn.contactos.Contacto;
 import ar.unrn.contactos.Observer;
 import org.junit.jupiter.api.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @DisplayName("Test de Agenda")
 class AgendaTest {
@@ -28,18 +28,31 @@ class AgendaTest {
     @BeforeEach
     public void setUp() {
         if (contador >= 0) {
-        agenda = Agenda.getAgenda(new ArrayList<>());
+            agenda = Agenda.getAgenda(new ArrayList<>());
             observer = new ObserverMock();
             agenda.registrarObserver(observer);
         }
         contador++;
     }
 
+    @AfterEach
+    public void tearDown() {
+        if (contador >= 0) {
+            agenda.limpiarAgenda();
+        }
+        contador++;
+    }
 
     @Test
     public void testAgregarContacto() {
-        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        agenda.agregarContacto(contacto);
+        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        try {
+            agenda.agregarContacto(contacto);
+        } catch (Exception e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         Assertions.assertEquals(1, agenda.cantidadContactos());
         Assertions.assertTrue(observer.addCalled);
@@ -47,9 +60,20 @@ class AgendaTest {
 
     @Test
     public void testEliminarContacto() {
-        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        agenda.agregarContacto(contacto);
-        agenda.eliminarContacto(contacto.id);
+        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        try {
+            agenda.agregarContacto(contacto);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
+        try {
+            agenda.eliminarContacto(contacto.id);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         Assertions.assertEquals(0, agenda.cantidadContactos());
         Assertions.assertTrue(observer.deleteCalled);
@@ -57,9 +81,20 @@ class AgendaTest {
 
     @Test
     public void testModificarAtributoContacto() {
-        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        agenda.agregarContacto(contacto);
-        agenda.modificarAtributoContacto(contacto.id, "numeroTelefono", "0987654321");
+        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        try {
+            agenda.agregarContacto(contacto);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
+        try {
+            agenda.modificarAtributoContacto(contacto.id, "numeroTelefono", "0987654321");
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         Assertions.assertEquals("0987654321", contacto.numeroTelefono);
         Assertions.assertTrue(observer.updateCalled);
@@ -67,10 +102,23 @@ class AgendaTest {
 
     @Test
     public void testEditarContacto() {
-        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        agenda.agregarContacto(contacto);
-        Contacto contactoEditado = new Contacto(contacto.id.toString(), "John", "Doe", "0987654321", "john.doe@newexample.com", "Nuevas Notas", "Argentina", "Buenos Aires", "CABA", "Calle Verdadera 456");
-        agenda.editarContacto(contacto.id, contactoEditado);
+        Contacto contacto = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        try {
+            agenda.agregarContacto(contacto);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
+        Contacto contactoEditado = new Contacto(contacto.id.toString(), "John", "Doe", "0987654321",
+                "john.doe@newexample.com", "Nuevas Notas", "Argentina", "Buenos Aires", "CABA", "Calle Verdadera 456");
+        try {
+            agenda.editarContacto(contacto.id, contactoEditado);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         Assertions.assertEquals("0987654321", contacto.numeroTelefono);
         Assertions.assertEquals("john.doe@newexample.com", contacto.email);
@@ -81,10 +129,17 @@ class AgendaTest {
 
     @Test
     public void testBuscarContacto() {
-        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
-        agenda.agregarContacto(contacto1);
-        agenda.agregarContacto(contacto2);
+        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2",
+                "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
+        try {
+            agenda.agregarContacto(contacto1);
+            agenda.agregarContacto(contacto2);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         EstrategiaBusquedaNombre estrategiaBusqueda = new EstrategiaBusquedaNombre();
         List<Contacto> resultados = agenda.buscarContacto(estrategiaBusqueda, "John");
@@ -96,22 +151,47 @@ class AgendaTest {
 
     @Test
     public void testVerContactos() {
-        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
-        agenda.agregarContacto(contacto1);
-        agenda.agregarContacto(contacto2);
+        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2",
+                "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
+        try {
+            agenda.agregarContacto(contacto1);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
+        try {
+            agenda.agregarContacto(contacto2);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         // Este test solo verifica que el método no cause errores.
-        // En una situación real, deberías capturar la salida del sistema y verificar su contenido.
+        // En una situación real, deberías capturar la salida del sistema y verificar su
+        // contenido.
         agenda.verContactos();
     }
 
     @Test
     public void testLimpiarAgenda() {
-        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 123");
-        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2", "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
-        agenda.agregarContacto(contacto1);
-        agenda.agregarContacto(contacto2);
+        Contacto contacto1 = new Contacto("John", "Doe", "1234567890", "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321", "jane.smith@example.com", "Notas2",
+                "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
+        try {
+            agenda.agregarContacto(contacto1);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
+        try {
+            agenda.agregarContacto(contacto2);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
         agenda.limpiarAgenda();
 
@@ -158,4 +238,3 @@ class AgendaTest {
     }
 
 }
-
