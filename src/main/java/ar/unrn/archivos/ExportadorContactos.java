@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.List;
+
 /**
  * Clase que se encarga de exportar los contactos de una agenda a un archivo de
  * texto.
@@ -71,15 +73,13 @@ public class ExportadorContactos {
      * @param contacto  El contacto cuyos detalles se desean escribir.
      */
     private void escribirContacto(StringBuilder contenido, Contacto contacto) {
-        contenido.append("Nombre: ").append(contacto.nombre).append("\n");
-        contenido.append("Apellido: ").append(contacto.apellido).append("\n");
-        contenido.append("Numero de telefono: ").append(contacto.numeroTelefono).append("\n");
-        contenido.append("Email: ").append(contacto.email).append("\n");
-        contenido.append("Notas: ").append(contacto.notas).append("\n");
-        contenido.append("Pais: ").append(contacto.direccion.pais).append("\n");
-        contenido.append("Provincia: ").append(contacto.direccion.provincia).append("\n");
-        contenido.append("Ciudad: ").append(contacto.direccion.ciudad).append("\n");
-        contenido.append("Calle: ").append(contacto.direccion.calle).append("\n");
+        List<Object> data = contacto.deshidratarContacto();
+        String[] campos = { "Nombre: ", "Apellido: ", "Numero de telefono: ", "Email: ", "Notas: ", "Pais: ",
+                "Provincia: ", "Ciudad: ", "Calle: " };
+
+        for (int i = 1; i <= 9; i++) { // Los índices van del 1 al 9 en la lista de datos
+            contenido.append(campos[i - 1]).append(data.get(i).toString()).append("\n");
+        }
     }
 
     /**

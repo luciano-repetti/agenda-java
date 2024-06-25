@@ -132,35 +132,6 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
     }
 
     /**
-     * Este método imprime en consola una representación
-     * tabular de los contactos en la agenda, con cada contacto en una fila.
-     */
-    @Override
-    public void verContactos() {
-        System.out.println(
-                "+----+-----------------------+----------------------+----------------------+--------------------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------+");
-        System.out.println(
-                "| ID | Nombre                | Apellido             | Telefono             | Email                          | Pais                 | Provincia            | Ciudad               | Notas                                                                                     |");
-        System.out.println(
-                "+----+-----------------------+----------------------+----------------------+--------------------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------+");
-
-        for (Contacto contacto : contactos) {
-            System.out.printf("| %-2s | %-21s | %-20s | %-20s | %-30s | %-20s | %-20s | %-20s | %-89s |\n",
-                    contacto.id,
-                    contacto.nombre,
-                    contacto.apellido,
-                    contacto.numeroTelefono,
-                    contacto.email,
-                    contacto.direccion.pais,
-                    contacto.direccion.provincia,
-                    contacto.direccion.ciudad,
-                    contacto.notas);
-            System.out.println(
-                    "+----+-----------------------+----------------------+----------------------+--------------------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------+");
-        }
-    }
-
-    /**
      * Agrega un nuevo contacto a la agenda y notifica a los observadores.
      *
      * @param contacto El contacto a agregar.
@@ -183,7 +154,9 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
         boolean found = false;
         while (iterator.hasNext() && !found) {
             Contacto currentContacto = iterator.next();
-            if (currentContacto.id.equals(id)) {
+            List<Object> data = currentContacto.deshidratarContacto();
+
+            if (UUID.fromString(data.get(0).toString()).equals(id)) {
                 iterator.remove();
                 notificarObserversDelete(currentContacto);
                 found = true;
@@ -225,14 +198,15 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param atributo El atributo a modificar.
      * @param valor    El nuevo valor del atributo.
      */
-    public void modificarAtributoContacto(UUID id, String atributo, String valor) throws SQLException {
-        for (Contacto contacto : contactos) {
-            if (contacto.id.equals(id)) {
-                contacto.actualizarAtributo(atributo, valor);
-                notificarObserversUpdate(contacto);
-            }
-        }
-    }
+    // public void modificarAtributoContacto(UUID id, String atributo, String valor)
+    // throws SQLException {
+    // for (Contacto contacto : contactos) {
+    // if (contacto.id.equals(id)) {
+    // contacto.actualizarAtributo(atributo, valor);
+    // notificarObserversUpdate(contacto);
+    // }
+    // }
+    // }
 
     /**
      * Edita un contacto existente en la agenda por su ID y notifica a los
@@ -243,8 +217,11 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      */
     public void editarContacto(UUID id, Contacto contactoEditado) throws SQLException {
         for (Contacto contacto : contactos) {
-            if (contacto.id.equals(id)) {
-                contacto.modificarContacto(contactoEditado);
+            List<Object> data = contacto.deshidratarContacto();
+
+            if (UUID.fromString(data.get(0).toString()).equals(id)) {
+                List<Object> listaContacto = contactoEditado.deshidratarContacto();
+                contacto.hidratarContacto(listaContacto);
                 notificarObserversUpdate(contacto);
             }
         }

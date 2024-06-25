@@ -28,7 +28,7 @@ public class Main {
      * @throws SQLException Si ocurre un error de acceso a la base de datos.
      */
     public static void main(String[] args) throws SQLException {
-        databaseUrl = "test4.db";
+        databaseUrl = "test.db";
 
         DataBaseInterface database = new DataBase(databaseUrl);
         agenda = Agenda.getAgenda(database.getContactos(true));

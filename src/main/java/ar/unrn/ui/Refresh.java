@@ -4,12 +4,14 @@ import ar.unrn.agenda.Agenda;
 import ar.unrn.contactos.Contacto;
 import ar.unrn.database.DataBase;
 
+import java.util.UUID;
+
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-
 
 /**
  * Clase que gestiona la actualización de la lista de contactos en el
@@ -33,9 +35,7 @@ public class Refresh {
         container.repaint();
         container.revalidate();
 
-
         agenda = Agenda.getAgenda(dataBase.getContactos(true));
-
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -55,27 +55,19 @@ public class Refresh {
             panelGbc.fill = GridBagConstraints.BOTH;
             panelGbc.insets = new Insets(5, 10, 5, 0);
             panelGbc.weightx = 1.0;
-
+            // ------------------------------------------------------------------------------
             panelGbc.gridx = 0;
-            panel.add(GUI.label(c.nombre), panelGbc);
-            panelGbc.gridx = 1;
-            panel.add(GUI.label(c.apellido), panelGbc);
-            panelGbc.gridx = 2;
-            panel.add(GUI.label(c.numeroTelefono), panelGbc);
-            panelGbc.gridx = 3;
-            panel.add(GUI.label(c.email), panelGbc);
-            panelGbc.gridx = 4;
-            panel.add(GUI.label(c.notas), panelGbc);
-            panelGbc.gridx = 5;
-            panel.add(GUI.label(c.direccion.pais), panelGbc);
-            panelGbc.gridx = 6;
-            panel.add(GUI.label(c.direccion.provincia), panelGbc);
-            panelGbc.gridx = 7;
-            panel.add(GUI.label(c.direccion.ciudad), panelGbc);
-            panelGbc.gridx = 8;
-            panel.add(GUI.label(c.direccion.calle), panelGbc);
+            List<Object> data = c.deshidratarContacto();
+            for (int j = 1; j < data.size(); j++) {
 
+                panel.add(GUI.label(data.get(j).toString()), panelGbc);
+                if (j != 9) {
+                    panelGbc.gridx = j;
+                }
+
+            }
             panelGbc.gridx = 9;
+
             panelGbc.weightx = 0.0;
             panelGbc.anchor = GridBagConstraints.EAST;
 
@@ -122,7 +114,8 @@ public class Refresh {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        agenda.eliminarContacto(c.id);
+                        // agenda.eliminarContacto(c.id);
+                        agenda.eliminarContacto(UUID.fromString(data.get(0).toString()));
                         refreshContacts(dataBase, container);
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(container, "Ha ocurrido un error al borrar el contacto",

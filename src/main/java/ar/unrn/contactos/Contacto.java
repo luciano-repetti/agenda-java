@@ -11,7 +11,6 @@ public class Contacto {
     private String email;
     private String notas;
     private UUID id;
-    private boolean active;
     private Direccion direccion;
 
     public Contacto(String uuid, String nombre, String apellido, String numeroTelefono, String email, String notas,
@@ -22,7 +21,6 @@ public class Contacto {
         this.email = email;
         this.notas = notas;
         this.id = UUID.fromString(uuid);
-        this.active = true;
         this.direccion = new Direccion(pais, provincia, ciudad, calle);
     }
 
@@ -35,7 +33,6 @@ public class Contacto {
         this.notas = notas;
         this.id = UUID.fromString(uuid);
         this.direccion = direccion;
-        this.active = true;
     }
 
     public Contacto(String nombre, String apellido, String numeroTelefono, String email, String notas, String pais,
@@ -46,7 +43,6 @@ public class Contacto {
         this.email = email;
         this.notas = notas;
         this.id = UUID.randomUUID();
-        this.active = true;
         this.direccion = new Direccion(pais, provincia, ciudad, calle);
     }
 
@@ -59,7 +55,6 @@ public class Contacto {
         list.add(email);
         list.add(notas);
         list.addAll(direccion.deshidratarDireccion());
-        list.add(active);
         return list;
     }
 

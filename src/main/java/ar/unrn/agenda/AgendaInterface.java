@@ -26,11 +26,6 @@ public interface AgendaInterface {
     void limpiarAgenda();
 
     /**
-     * Muestra todos los contactos de la agenda.
-     */
-    void verContactos();
-
-    /**
      * Agrega un contacto a la agenda.
      *
      * @param contacto El contacto a agregar.

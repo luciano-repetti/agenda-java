@@ -6,6 +6,8 @@ import ar.unrn.database.DataBase;
 import ar.unrn.database.DataBaseInterface;
 import ar.unrn.validaciones.Validaciones;
 
+import java.util.UUID;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -126,33 +128,46 @@ public class OpenContact {
         table.setBackground(Color.white);
         table.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        aniadirCampoValidacion(table, "Nombre: ", contacto.nombre, "^[a-zA-Z ]{1,20}$",
+        // -------------------------------------------------
+        List<Object> data = contacto.deshidratarContacto();
+        String nombre = data.get(1).toString();
+        String apellido = data.get(2).toString();
+        String numeroTelefono = data.get(3).toString();
+        String email = data.get(4).toString();
+        String notas = data.get(5).toString();
+
+        String pais = data.get(6).toString();
+        String provincia = data.get(7).toString();
+        String ciudad = data.get(8).toString();
+        String calle = data.get(9).toString();
+
+        aniadirCampoValidacion(table, "Nombre: ", nombre, "^[a-zA-Z ]{1,20}$",
                 "La entrada nombre debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Apellido: ", contacto.apellido, "^[a-zA-Z ]{1,20}$",
+        aniadirCampoValidacion(table, "Apellido: ", apellido, "^[a-zA-Z ]{1,20}$",
                 "La entrada apellido debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Numero de telefono: ", contacto.numeroTelefono, "^[0-9+]{1,15}$",
+        aniadirCampoValidacion(table, "Numero de telefono: ", numeroTelefono, "^[0-9+]{1,15}$",
                 "La entrada numero de telefono debe contener solo numeros y como maximo 15 caracteres, incluyendo el simbolo '+'.",
                 desactivado);
 
-        aniadirCampoValidacion(table, "Email: ", contacto.email,
+        aniadirCampoValidacion(table, "Email: ", email,
                 "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
                 "La entrada email debe ser una direccion de correo electronico valida.", desactivado);
 
-        aniadirCampoValidacion(table, "Notas: ", contacto.notas, "^[\\s\\S]{0,50}$",
+        aniadirCampoValidacion(table, "Notas: ", notas, "^[\\s\\S]{0,50}$",
                 "La entrada notas debe tener un maximo de 50 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Pais: ", contacto.direccion.pais, "^[a-zA-Z ]{0,20}$",
+        aniadirCampoValidacion(table, "Pais: ", pais, "^[a-zA-Z ]{0,20}$",
                 "La entrada pais debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Provincia: ", contacto.direccion.provincia, "^[a-zA-Z ]{0,20}$",
+        aniadirCampoValidacion(table, "Provincia: ", provincia, "^[a-zA-Z ]{0,20}$",
                 "La entrada provincia debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Ciudad: ", contacto.direccion.ciudad, "^[a-zA-Z ]{0,20}$",
+        aniadirCampoValidacion(table, "Ciudad: ", ciudad, "^[a-zA-Z ]{0,20}$",
                 "La entrada ciudad debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
-        aniadirCampoValidacion(table, "Calle: ", contacto.direccion.calle, "^[a-zA-Z0-9 ]{0,20}$",
+        aniadirCampoValidacion(table, "Calle: ", calle, "^[a-zA-Z0-9 ]{0,20}$",
                 "La entrada calle debe contener solo letras y tener maximo 20 caracteres.", desactivado);
 
         return table;
@@ -169,7 +184,7 @@ public class OpenContact {
      * @param desactivo    Indica si el campo está desactivado.
      */
     private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
-                                        String mensajeError, boolean desactivo) {
+            String mensajeError, boolean desactivo) {
         table.add(GUI.label(etiqueta)).setForeground(Color.black);
         if (desactivo) {
             JTextField campo = GUI.textField(valor);
@@ -258,7 +273,9 @@ public class OpenContact {
                             validacionesList.get(7).campo.getText(),
                             validacionesList.get(8).campo.getText());
                     try {
-                        agenda.editarContacto(c.id, contactoEditado);
+                        List<Object> data = c.deshidratarContacto();
+
+                        agenda.editarContacto(UUID.fromString(data.get(0).toString()), contactoEditado);
                         Refresh.refreshContacts((DataBase) dataBase, container);
                         frame.dispose();
                     } catch (SQLException ex) {

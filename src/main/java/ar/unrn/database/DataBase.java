@@ -132,6 +132,7 @@ public class DataBase implements DataBaseInterface, Observer {
                 statement.setObject(i + 1, data.get(i));
             }
             statement.executeUpdate();
+
         }
     }
 
