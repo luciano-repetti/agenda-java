@@ -10,6 +10,11 @@ import java.util.List;
 /**
  * Implementación de la interfaz DataBaseInterface que gestiona la base de datos
  * SQLite para almacenar contactos.
+ * Permite crear la tabla contacto en la base de datos
+ * Inserta en la base de datos
+ * Actualiza los registros de la base de datos
+ * Gestiona la conexión con la base de datos
+ * Convierte los registros de la tabla en instancias de la clase
  * Actúa como un observador para los cambios en la lista de contactos.
  */
 public class DataBase implements DataBaseInterface, Observer {
