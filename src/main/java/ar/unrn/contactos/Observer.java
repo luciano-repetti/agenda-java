@@ -1,5 +1,6 @@
 package ar.unrn.contactos;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -11,21 +12,21 @@ public interface Observer {
      *
      * @param contacto El contacto que se añade.
      */
-    void aniadir(Contacto contacto);
+    void aniadir(Contacto contacto) throws SQLException;
 
     /**
      * Método para actualizar un contacto existente.
      *
      * @param contacto El contacto actualizado.
      */
-    void actualizar(Contacto contacto);
+    void actualizar(Contacto contacto) throws SQLException;
 
     /**
      * Método para eliminar un contacto.
      *
      * @param contacto El contacto que se elimina.
      */
-    void deletear(Contacto contacto);
+    void deletear(Contacto contacto) throws SQLException;
 
 
     /**
@@ -34,6 +35,6 @@ public interface Observer {
      * @param active true si se desea obtener los contactos activos, false si se desea obtener los inactivos.
      * @return Una lista de contactos que cumplen con el estado especificado.
      */
-    List<Contacto> traerContactos(Boolean active);
+    List<Contacto> traerContactos(Boolean active) throws SQLException;
 
 }

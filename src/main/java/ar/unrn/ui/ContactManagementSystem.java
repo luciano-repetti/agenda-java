@@ -64,6 +64,9 @@ public class ContactManagementSystem {
                 try {
                     new OpenContact(database, table);
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(frame, "Ha ocurrido un error al agregar el contacto",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -82,11 +85,13 @@ public class ContactManagementSystem {
                     JOptionPane.showMessageDialog(frame, "La ruta donde se guardo el archivo es: " + ruta,
                             "Archivo guardado con exito",
                             JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                } catch (SQLException | IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Ha ocurrido un error al exportar los contactos",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    throw new RuntimeException("Error al editar el contacto" + e1);
                 }
+
 
             }
         });

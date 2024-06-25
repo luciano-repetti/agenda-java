@@ -93,12 +93,8 @@ public class DataBase implements DataBaseInterface, Observer {
      * @param contacto El contacto a eliminar.
      */
     @Override
-    public void deletear(Contacto contacto) {
-        try {
+    public void deletear(Contacto contacto) throws SQLException {
             logicalDeleteContacto(contacto.id.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -107,12 +103,8 @@ public class DataBase implements DataBaseInterface, Observer {
      * @param contacto El contacto a añadir.
      */
     @Override
-    public void aniadir(Contacto contacto) {
-        try {
+    public void aniadir(Contacto contacto) throws SQLException {
             postContacto(contacto);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -121,12 +113,8 @@ public class DataBase implements DataBaseInterface, Observer {
      * @param contacto El contacto actualizado.
      */
     @Override
-    public void actualizar(Contacto contacto) {
-        try {
-            updateContacto(contacto); // Cambié updateContacto a postContacto aquí
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void actualizar(Contacto contacto) throws SQLException {
+        updateContacto(contacto); // Cambié updateContacto a postContacto aquí
     }
 
     /**
@@ -162,10 +150,9 @@ public class DataBase implements DataBaseInterface, Observer {
     @Override
     public void logicalDeleteContacto(String uuid) throws SQLException {
         String sql = "UPDATE usuarios SET active = false WHERE uuid = ?";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+        PreparedStatement statement = conexion.prepareStatement(sql);
             statement.setString(1, uuid);
             statement.executeUpdate();
-        }
     }
 
     /**
@@ -178,7 +165,7 @@ public class DataBase implements DataBaseInterface, Observer {
     @Override
     public List<Contacto> getContactos(Boolean active) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE active = ?";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+        PreparedStatement statement = conexion.prepareStatement(sql);
             statement.setBoolean(1, active);
             ResultSet resultSet = statement.executeQuery();
             List<Contacto> contactos = new ArrayList<>();
@@ -199,7 +186,6 @@ public class DataBase implements DataBaseInterface, Observer {
                 contactos.add(contacto);
             }
             return contactos;
-        }
     }
 
     /**
@@ -209,12 +195,7 @@ public class DataBase implements DataBaseInterface, Observer {
      * @return Una lista de contactos que cumplen con el estado especificado.
      */
     @Override
-    public List<Contacto> traerContactos(Boolean active) {
-        try {
-            return getContactos(active);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public List<Contacto> traerContactos(Boolean active) throws SQLException {
+        return getContactos(active);
     }
 }

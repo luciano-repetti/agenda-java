@@ -1,5 +1,7 @@
 package ar.unrn.contactos;
 
+import java.sql.SQLException;
+
 /**
  * Interfaz que define métodos para gestionar observadores de cambios en los contactos.
  */
@@ -23,20 +25,20 @@ public interface Subject {
      *
      * @param contacto El contacto que ha sido actualizado.
      */
-    void notificarObserversUpdate(Contacto contacto);
+    void notificarObserversUpdate(Contacto contacto) throws SQLException;
 
     /**
      * Notifica a los observadores que se ha eliminado un contacto.
      *
      * @param contacto El contacto que ha sido eliminado.
      */
-    void notificarObserversDelete(Contacto contacto);
+    void notificarObserversDelete(Contacto contacto) throws SQLException;
 
     /**
      * Notifica a los observadores que se ha añadido un nuevo contacto.
      *
      * @param contacto El contacto que ha sido añadido.
      */
-    void notificarObserversAdd(Contacto contacto);
+    void notificarObserversAdd(Contacto contacto) throws SQLException;
 
 }

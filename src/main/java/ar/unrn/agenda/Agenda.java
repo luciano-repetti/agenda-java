@@ -6,6 +6,7 @@ import ar.unrn.contactos.Contacto;
 import ar.unrn.contactos.Observer;
 import ar.unrn.contactos.Subject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -80,7 +81,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param contacto El contacto que ha sido eliminado.
      */
     @Override
-    public void notificarObserversDelete(Contacto contacto) {
+    public void notificarObserversDelete(Contacto contacto) throws SQLException {
         for (Observer observer : observers) {
             observer.deletear(contacto);
         }
@@ -93,7 +94,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param contacto El contacto que ha sido actualizado.
      */
     @Override
-    public void notificarObserversUpdate(Contacto contacto) {
+    public void notificarObserversUpdate(Contacto contacto) throws SQLException {
         for (Observer observer : observers) {
             observer.actualizar(contacto);
         }
@@ -106,7 +107,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param contacto El contacto que ha sido añadido.
      */
     @Override
-    public void notificarObserversAdd(Contacto contacto) {
+    public void notificarObserversAdd(Contacto contacto) throws SQLException {
         for (Observer observer : observers) {
             observer.aniadir(contacto);
         }
@@ -165,7 +166,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param contacto El contacto a agregar.
      */
     @Override
-    public void agregarContacto(Contacto contacto) {
+    public void agregarContacto(Contacto contacto) throws SQLException {
         contactos.add(contacto);
         notificarObserversAdd(contacto);
     }
@@ -176,15 +177,20 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param id El ID del contacto a eliminar.
      */
     @Override
-    public void eliminarContacto(UUID id) {
+    public void eliminarContacto(UUID id) throws SQLException {
+
         Iterator<Contacto> iterator = contactos.iterator();
-        while (iterator.hasNext()) {
+        boolean found = false;
+        while (iterator.hasNext() && !found) {
             Contacto currentContacto = iterator.next();
             if (currentContacto.id.equals(id)) {
                 iterator.remove();
                 notificarObserversDelete(currentContacto);
-                break;
+                found = true;
             }
+        }
+        if (!found) {
+            throw new SQLException();
         }
     }
 
@@ -218,18 +224,14 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * @param id       El ID del contacto a modificar.
      * @param atributo El atributo a modificar.
      * @param valor    El nuevo valor del atributo.
-     * @return true si se modificó correctamente, false si no se encontró el
-     *         contacto con el ID especificado.
      */
-    public boolean modificarAtributoContacto(UUID id, String atributo, String valor) {
+    public void modificarAtributoContacto(UUID id, String atributo, String valor) throws SQLException {
         for (Contacto contacto : contactos) {
             if (contacto.id.equals(id)) {
                 contacto.actualizarAtributo(atributo, valor);
                 notificarObserversUpdate(contacto);
-                return true;
             }
         }
-        return false;
     }
 
     /**
@@ -238,18 +240,14 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      *
      * @param id              El ID del contacto a editar.
      * @param contactoEditado El contacto con los datos actualizados.
-     * @return true si se editó correctamente, false si no se encontró el contacto
-     *         con el ID especificado.
      */
-    public boolean editarContacto(UUID id, Contacto contactoEditado) {
+    public void editarContacto(UUID id, Contacto contactoEditado) throws SQLException {
         for (Contacto contacto : contactos) {
             if (contacto.id.equals(id)) {
                 contacto.modificarContacto(contactoEditado);
                 notificarObserversUpdate(contacto);
-                return true;
             }
         }
-        return false;
     }
 
     /**

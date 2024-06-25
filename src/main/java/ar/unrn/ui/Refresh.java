@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * Clase que gestiona la actualización de la lista de contactos en el
@@ -27,16 +28,14 @@ public class Refresh {
      * @param dataBase  La base de datos de contactos.
      * @param container El contenedor donde se mostrarán los contactos.
      */
-    public static void refreshContacts(DataBase dataBase, JPanel container) {
+    public static void refreshContacts(DataBase dataBase, JPanel container) throws SQLException {
         container.removeAll();
         container.repaint();
         container.revalidate();
 
-        try {
-            agenda = Agenda.getAgenda(dataBase.getContactos(true));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        agenda = Agenda.getAgenda(dataBase.getContactos(true));
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -91,7 +90,10 @@ public class Refresh {
                     try {
                         new OpenContact("view", c, dataBase, container);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(container, "Ha ocurrido un error al ver el contacto",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException("Error al editar el contacto");
                     }
                 }
             });
@@ -105,7 +107,10 @@ public class Refresh {
                     try {
                         new OpenContact("edicion", c, dataBase, container);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(container, "Ha ocurrido un error al editar el contacto",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException("Error al editar el contacto");
                     }
                 }
             });
@@ -116,8 +121,15 @@ public class Refresh {
             delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    agenda.eliminarContacto(c.id);
-                    refreshContacts(dataBase, container);
+                    try {
+                        agenda.eliminarContacto(c.id);
+                        refreshContacts(dataBase, container);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(container, "Ha ocurrido un error al borrar el contacto",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException(ex); // Por las dudas
+                    }
                 }
             });
             containerButton.add(delete);

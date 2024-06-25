@@ -98,11 +98,8 @@ public class OpenContact {
      * @throws SQLException Si ocurre un error de acceso a la base de datos.
      */
     private void inicializarAgenda(DataBaseInterface dataBase) throws SQLException {
-        try {
-            agenda = Agenda.getAgenda(dataBase.getContactos(true));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        agenda = Agenda.getAgenda(dataBase.getContactos(true));
+
     }
 
     /**
@@ -172,7 +169,7 @@ public class OpenContact {
      * @param desactivo    Indica si el campo está desactivado.
      */
     private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
-            String mensajeError, boolean desactivo) {
+                                        String mensajeError, boolean desactivo) {
         table.add(GUI.label(etiqueta)).setForeground(Color.black);
         if (desactivo) {
             JTextField campo = GUI.textField(valor);
@@ -222,9 +219,16 @@ public class OpenContact {
                             validacionesList.get(6).campo.getText(),
                             validacionesList.get(7).campo.getText(),
                             validacionesList.get(8).campo.getText());
-                    agenda.agregarContacto(nuevoContacto);
-                    Refresh.refreshContacts((DataBase) dataBase, container);
-                    frame.dispose();
+                    try {
+                        agenda.agregarContacto(nuevoContacto);
+                        Refresh.refreshContacts((DataBase) dataBase, container);
+                        frame.dispose();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(container, "Ha ocurrido un error al agregar el contacto",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException(ex); // Por las dudas
+                    }
                 }
             }
         });
@@ -253,9 +257,16 @@ public class OpenContact {
                             validacionesList.get(6).campo.getText(),
                             validacionesList.get(7).campo.getText(),
                             validacionesList.get(8).campo.getText());
-                    agenda.editarContacto(c.id, contactoEditado);
-                    Refresh.refreshContacts((DataBase) dataBase, container);
-                    frame.dispose();
+                    try {
+                        agenda.editarContacto(c.id, contactoEditado);
+                        Refresh.refreshContacts((DataBase) dataBase, container);
+                        frame.dispose();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(container, "Ha ocurrido un error al editar el contacto",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException(ex); // Por las dudas
+                    }
                 }
             }
         });

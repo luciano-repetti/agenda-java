@@ -3,6 +3,7 @@ package ar.unrn.agenda;
 import ar.unrn.agenda.strategyBusqueda.EstrategiaBusqueda;
 import ar.unrn.contactos.Contacto;
 
+import java.sql.SQLException;
 import java.util.UUID;
 import java.util.List;
 
@@ -34,14 +35,14 @@ public interface AgendaInterface {
      *
      * @param contacto El contacto a agregar.
      */
-    void agregarContacto(Contacto contacto);
+    void agregarContacto(Contacto contacto) throws SQLException;
 
     /**
      * Elimina un contacto de la agenda dado su ID.
      *
      * @param id El ID del contacto a eliminar.
      */
-    void eliminarContacto(UUID id);
+    void eliminarContacto(UUID id) throws SQLException;
 
     /**
      * Busca contactos en la agenda utilizando una estrategia de búsqueda
