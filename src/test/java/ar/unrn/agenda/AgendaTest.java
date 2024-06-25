@@ -1,5 +1,6 @@
 package ar.unrn.agenda;
 
+import ar.unrn.agenda.strategyBusqueda.BuscarPorNombre;
 import ar.unrn.agenda.strategyBusqueda.EstrategiaBusqueda;
 import ar.unrn.contactos.Contacto;
 import ar.unrn.contactos.Observer;
@@ -116,30 +117,30 @@ class AgendaTest {
 
     }
 
-    // @Test
-    // public void testBuscarContacto() {
-    // Contacto contacto1 = new Contacto("John", "Doe", "1234567890",
-    // "john.doe@example.com", "Notas", "Argentina",
-    // "Buenos Aires", "CABA", "Calle Falsa 123");
-    // Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321",
-    // "jane.smith@example.com", "Notas2",
-    // "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
-    // try {
-    // agenda.agregarContacto(contacto1);
-    // agenda.agregarContacto(contacto2);
-    // } catch (SQLException e) {
-    // Assertions.fail("No deberías haber llegado hasta aca");
-    // e.printStackTrace();
-    // }
+    @Test
+    public void testBuscarContacto() {
+        Contacto contacto1 = new Contacto("John", "Doe", "1234567890",
+                "john.doe@example.com", "Notas", "Argentina",
+                "Buenos Aires", "CABA", "Calle Falsa 123");
+        Contacto contacto2 = new Contacto("Jane", "Smith", "0987654321",
+                "jane.smith@example.com", "Notas2",
+                "Argentina", "Buenos Aires", "CABA", "Calle Falsa 456");
+        try {
+            agenda.agregarContacto(contacto1);
+            agenda.agregarContacto(contacto2);
+        } catch (SQLException e) {
+            Assertions.fail("No deberías haber llegado hasta aca");
+            e.printStackTrace();
+        }
 
-    // EstrategiaBusquedaNombre estrategiaBusqueda = new EstrategiaBusquedaNombre();
-    // List<Contacto> resultados = agenda.buscarContacto(estrategiaBusqueda,
-    // "John");
+        BuscarPorNombre busquedaNombre = new BuscarPorNombre();
+        List<Contacto> resultados = agenda.buscarContacto(busquedaNombre,
+                "John");
 
-    // resultados.toString();
-    // Assertions.assertEquals(1, resultados.size());
-    // Assertions.assertEquals(contacto1, resultados.get(0));
-    // }
+        resultados.toString();
+        Assertions.assertEquals(1, resultados.size());
+        Assertions.assertEquals(contacto1, resultados.get(0));
+    }
 
     @Test
     public void testLimpiarAgenda() {

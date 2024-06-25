@@ -47,7 +47,7 @@ public abstract class BusquedaPalabra implements EstrategiaBusqueda<String> {
 
             if (palabra != null && !palabra.isEmpty()) {
 
-                if (palabra.toLowerCase().contains(palabraComparar)) {
+                if (palabra.contains(palabraComparar.toLowerCase())) {
                     listaRetorno.add(contactoActual);
                 }
 
