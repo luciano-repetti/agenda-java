@@ -1,4 +1,3 @@
-// Usa S I N G L E T O N
 package ar.unrn.agenda;
 
 import ar.unrn.agenda.strategyBusqueda.EstrategiaBusqueda;
@@ -12,8 +11,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Clase que representa una agenda de contactos, implementando el patrón
+ * Singleton,
+ * la interfaz Subject para observadores y la interfaz Iterable para iterar
+ * sobre los contactos.
+ */
 public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
-
+    /**
+     * Atributos que representan una lista con objetos de Contacto que reprensanta
+     * las funcionalidades de una agenda
+     */
     private List<Contacto> contactos;
     private final List<Observer> observers;
     private static Agenda agenda;
@@ -79,6 +87,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * agenda.
      *
      * @param contacto El contacto que ha sido eliminado.
+     * @throws SQLException Si ocurre un error al notificar a los observadores.
      */
     @Override
     public void notificarObserversDelete(Contacto contacto) throws SQLException {
@@ -92,6 +101,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * agenda.
      *
      * @param contacto El contacto que ha sido actualizado.
+     * @throws SQLException Si ocurre un error al notificar a los observadores.
      */
     @Override
     public void notificarObserversUpdate(Contacto contacto) throws SQLException {
@@ -105,6 +115,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * agenda.
      *
      * @param contacto El contacto que ha sido añadido.
+     * @throws SQLException Si ocurre un error al notificar a los observadores.
      */
     @Override
     public void notificarObserversAdd(Contacto contacto) throws SQLException {
@@ -135,6 +146,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * Agrega un nuevo contacto a la agenda y notifica a los observadores.
      *
      * @param contacto El contacto a agregar.
+     * @throws SQLException Si ocurre un error al notificar a los observadores.
      */
     @Override
     public void agregarContacto(Contacto contacto) throws SQLException {
@@ -146,10 +158,11 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      * Elimina un contacto de la agenda por su ID y notifica a los observadores.
      *
      * @param id El ID del contacto a eliminar.
+     * @throws SQLException Si no se encuentra el contacto o si ocurre un error al
+     *                      notificar a los observadores.
      */
     @Override
     public void eliminarContacto(UUID id) throws SQLException {
-
         Iterator<Contacto> iterator = contactos.iterator();
         boolean found = false;
         while (iterator.hasNext() && !found) {
@@ -173,6 +186,7 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
      *
      * @param estrategiaBusqueda La estrategia de búsqueda a utilizar.
      * @param palabra            La palabra clave a buscar.
+     * @param <T>                El tipo de la palabra clave.
      * @return Una lista de contactos que coinciden con la búsqueda.
      */
     @Override
@@ -191,29 +205,12 @@ public class Agenda implements AgendaInterface, Subject, Iterable<Contacto> {
     }
 
     /**
-     * Modifica un atributo específico de un contacto en la agenda por su ID y
-     * notifica a los observadores.
-     *
-     * @param id       El ID del contacto a modificar.
-     * @param atributo El atributo a modificar.
-     * @param valor    El nuevo valor del atributo.
-     */
-    // public void modificarAtributoContacto(UUID id, String atributo, String valor)
-    // throws SQLException {
-    // for (Contacto contacto : contactos) {
-    // if (contacto.id.equals(id)) {
-    // contacto.actualizarAtributo(atributo, valor);
-    // notificarObserversUpdate(contacto);
-    // }
-    // }
-    // }
-
-    /**
      * Edita un contacto existente en la agenda por su ID y notifica a los
      * observadores.
      *
      * @param id              El ID del contacto a editar.
      * @param contactoEditado El contacto con los datos actualizados.
+     * @throws SQLException Si ocurre un error al notificar a los observadores.
      */
     public void editarContacto(UUID id, Contacto contactoEditado) throws SQLException {
         for (Contacto contacto : contactos) {

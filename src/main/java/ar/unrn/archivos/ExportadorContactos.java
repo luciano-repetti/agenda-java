@@ -11,8 +11,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Clase que se encarga de exportar los contactos de una agenda a un archivo de
- * texto.
+ * Clase que se encarga de exportar los contactos de una Lista agenda a un
+ * archivo de texto.
  */
 public class ExportadorContactos {
 

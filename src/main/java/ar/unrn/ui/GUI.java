@@ -81,6 +81,13 @@ public class GUI {
         return scrollPane;
     }
 
+    /**
+     * Crea un botón personalizado con el texto y color de fondo especificados.
+     *
+     * @param text  El texto que se mostrará en el botón.
+     * @param color El color de fondo del botón.
+     * @return Un nuevo objeto JButton con las características especificadas.
+     */
     public static JButton buttonAccion(String text, Color color) {
         JButton newButton = new JButton(text);
         newButton.setFont(new Font("Tahoma", Font.BOLD, 18));
