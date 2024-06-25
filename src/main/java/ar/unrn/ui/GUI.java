@@ -80,4 +80,16 @@ public class GUI {
 
         return scrollPane;
     }
+
+    public static JButton buttonAccion(String text, Color color) {
+        JButton newButton = new JButton(text);
+        newButton.setFont(new Font("Tahoma", Font.BOLD, 18));
+        newButton.setFocusable(false);
+        newButton.setBackground(color);
+        newButton.setForeground(Color.white);
+        newButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        newButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        return newButton;
+    }
 }

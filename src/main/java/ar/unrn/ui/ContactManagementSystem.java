@@ -55,13 +55,8 @@ public class ContactManagementSystem {
         title.setVerticalAlignment(JLabel.CENTER);
         top.add(title);
 
-        JButton newContact = new JButton("Add Contact");
-        newContact.setFont(new Font("Tahoma", Font.BOLD, 18));
-        newContact.setFocusable(false);
-        newContact.setBackground(new Color(88, 179, 88));
-        newContact.setForeground(Color.white);
-        newContact.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        newContact.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton newContact = GUI.buttonAccion("Add contacto", new Color(88, 179, 88));
+
         newContact.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,13 +69,8 @@ public class ContactManagementSystem {
         });
         top.add(newContact);
 
-        JButton exportContacts = new JButton("Exportar contactos");
-        exportContacts.setFont(new Font("Tahoma", Font.BOLD, 18));
-        exportContacts.setFocusable(false);
-        exportContacts.setBackground(new Color(4, 57, 94));
-        exportContacts.setForeground(Color.white);
-        exportContacts.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        exportContacts.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton exportContacts = GUI.buttonAccion("Exportar contactos", new Color(4, 57, 94));
+
         exportContacts.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
