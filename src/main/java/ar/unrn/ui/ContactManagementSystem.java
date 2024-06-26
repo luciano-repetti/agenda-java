@@ -19,7 +19,7 @@ import java.sql.SQLException;
  * base de datos y la agenda de contactos.
  */
 public class ContactManagementSystem {
-    private static GridLayout gridLayout;
+    protected static GridLayout gridLayout;
     private static JPanel table;
 
     // Colors
