@@ -35,11 +35,12 @@ public class Refresh {
         container.repaint();
         container.revalidate();
 
-        int rows = agenda.cantidadContactos();
-        if (rows<8) rows=8;
-        ContactManagementSystem.gridLayout.setRows(rows);
-
         agenda = Agenda.getAgenda(dataBase.getContactos(true));
+
+        int rows = agenda.cantidadContactos();
+        if (rows < 8)
+            rows = 8;
+        ContactManagementSystem.gridLayout.setRows(rows);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
