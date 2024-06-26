@@ -184,7 +184,7 @@ public class OpenContact {
      * @param desactivo    Indica si el campo está desactivado.
      */
     private void aniadirCampoValidacion(JPanel table, String etiqueta, String valor, String regex,
-            String mensajeError, boolean desactivo) {
+                                        String mensajeError, boolean desactivo) {
         table.add(GUI.label(etiqueta)).setForeground(Color.black);
         if (desactivo) {
             JTextField campo = GUI.textField(valor);
@@ -224,16 +224,21 @@ public class OpenContact {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (validarCampos()) {
+                    List<List<Object>> data = new ArrayList<>();
+                    for (Validaciones validacion : validacionesList) {
+                        data.add(validacion.deshidratarValidaciones());
+                    }
+
                     Contacto nuevoContacto = new Contacto(
-                            validacionesList.get(0).campo.getText(),
-                            validacionesList.get(1).campo.getText(),
-                            validacionesList.get(2).campo.getText(),
-                            validacionesList.get(3).campo.getText(),
-                            validacionesList.get(4).campo.getText(),
-                            validacionesList.get(5).campo.getText(),
-                            validacionesList.get(6).campo.getText(),
-                            validacionesList.get(7).campo.getText(),
-                            validacionesList.get(8).campo.getText());
+                            data.get(0).get(2).toString(),
+                            data.get(1).get(2).toString(),
+                            data.get(2).get(2).toString(),
+                            data.get(3).get(2).toString(),
+                            data.get(4).get(2).toString(),
+                            data.get(5).get(2).toString(),
+                            data.get(6).get(2).toString(),
+                            data.get(7).get(2).toString(),
+                            data.get(8).get(2).toString());
                     try {
                         agenda.agregarContacto(nuevoContacto);
                         Refresh.refreshContacts((DataBase) dataBase, container);
@@ -261,21 +266,25 @@ public class OpenContact {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                List<List<Object>> data = new ArrayList<>();
+                for (Validaciones validacion : validacionesList) {
+                    data.add(validacion.deshidratarValidaciones());
+                }
+
                 if (validarCampos()) {
                     Contacto contactoEditado = new Contacto(
-                            validacionesList.get(0).campo.getText(),
-                            validacionesList.get(1).campo.getText(),
-                            validacionesList.get(2).campo.getText(),
-                            validacionesList.get(3).campo.getText(),
-                            validacionesList.get(4).campo.getText(),
-                            validacionesList.get(5).campo.getText(),
-                            validacionesList.get(6).campo.getText(),
-                            validacionesList.get(7).campo.getText(),
-                            validacionesList.get(8).campo.getText());
+                            data.get(0).get(2).toString(),
+                            data.get(1).get(2).toString(),
+                            data.get(2).get(2).toString(),
+                            data.get(3).get(2).toString(),
+                            data.get(4).get(2).toString(),
+                            data.get(5).get(2).toString(),
+                            data.get(6).get(2).toString(),
+                            data.get(7).get(2).toString(),
+                            data.get(8).get(2).toString());
                     try {
-                        List<Object> data = c.deshidratarContacto();
-
-                        agenda.editarContacto(UUID.fromString(data.get(0).toString()), contactoEditado);
+                        List<Object> contactoDeshidratado = c.deshidratarContacto();
+                        agenda.editarContacto(UUID.fromString(contactoDeshidratado.get(0).toString()), contactoEditado);
                         Refresh.refreshContacts((DataBase) dataBase, container);
                         frame.dispose();
                     } catch (SQLException ex) {
@@ -296,8 +305,9 @@ public class OpenContact {
      */
     private boolean validarCampos() {
         for (Validaciones validacion : validacionesList) {
-            if (!validacion.validarEntrada(validacion.campo.getText())) {
-                JOptionPane.showMessageDialog(frame, validacion.mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
+            List<Object> data = validacion.deshidratarValidaciones();
+            if (!validacion.validarEntrada(data.get(2).toString())) {
+                JOptionPane.showMessageDialog(frame, data.get(0), "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }

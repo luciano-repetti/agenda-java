@@ -1,6 +1,11 @@
 package ar.unrn.validaciones;
 
+
+
 import javax.swing.JTextField;
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -11,17 +16,17 @@ public class Validaciones {
     /**
      * Atributo que representa el mensaje de error asociado cuando la entrada no cumple con la expresión regular.
      */
-    public String mensajeError;
+    private String mensajeError;
 
     /**
      * Atributo que representa la expresión regular utilizada para validar la entrada.
      */
-    public String expresionRegular;
+    private String expresionRegular;
 
     /**
      * Atributo que representa el campo de texto (JTextField) que se va a validar.
      */
-    public JTextField campo;
+    private JTextField campo;
 
     /**
      * Constructor de la clase Validaciones.
@@ -48,4 +53,44 @@ public class Validaciones {
         boolean matches = matcher.matches();
         return matches;
     }
+
+    /**
+     * Deshidrata el contacto en una lista de objetos.
+     *
+     * @return Lista de objetos que representan la validacion.
+     */
+    public List<Object> deshidratarValidaciones() {
+        List<Object> list = new ArrayList<>();
+        list.add(mensajeError);
+        list.add(expresionRegular);
+        list.add(campo.getText());
+        return list;
+    }
+
+    /**
+     * Crea un contacto a partir de una lista de objetos.
+     *
+     * @param list Lista de objetos que representan la validacion.
+     * @return La validacion creada.
+     */
+    private Validaciones fromList(List<Object> list) {
+        String mensajeError = (String) list.get(0);
+        String expresionRegular = (String) list.get(1);
+        JTextField campo = (JTextField) list.get(2);
+        return new Validaciones(expresionRegular, mensajeError,campo);
+    }
+
+    /**
+     * Hidrata la validación con una lista de objetos.
+     *
+     * @param list Lista de objetos que representan la validacion.
+     */
+    public void hidratarContacto(List<Object> list) {
+        Validaciones validacion = fromList(list);
+        this.mensajeError = validacion.mensajeError;
+        this.expresionRegular = validacion.expresionRegular;
+        this.campo = validacion.campo;
+    }
+
+
 }
